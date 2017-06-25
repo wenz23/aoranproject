@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="Django default" uuid="c999c8b3-7e5d-4e51-9fab-b3633a3002d1">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/aoranproject/settings.py</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://aoranprojectdb.csbmq0o4oy2b.us-west-1.rds.amazonaws.com:5432/aoranprojectdb</jdbc-url>
+    </data-source>
+  </component>
+</project>
