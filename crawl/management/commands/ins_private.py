@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
-from settings.local import ins_passwords, ins_tags
+from settings.local import ins_passwords, ins_tags, ins_comments
 
 
 def ins_login(user_name=None):
@@ -73,7 +73,7 @@ def search_ins_tags(tag_input=None, driver=None):
     return driver
 
 
-def loop_and_like(driver=None, max_like=50):
+def loop_and_like(driver=None, max_like=50, comment_items=None):
 
     # Click initial picture
     time.sleep(random.uniform(2.5, 4.5))
@@ -94,7 +94,7 @@ def loop_and_like(driver=None, max_like=50):
         try:
             driver.find_element_by_xpath("//textarea[contains(@aria-label,'Add a comment…')]").click()
             comment_input = driver.find_element_by_xpath("//textarea[contains(@aria-label,'Add a comment…')]")
-            for i in '😀😁😂😇😺':  # "Love the shot!"
+            for i in random.choice(comment_items):
                 comment_input.send_keys(i)
                 time.sleep(random.uniform(0.2, 0.6))
             comment_input.send_keys(Keys.RETURN)
@@ -113,12 +113,12 @@ def loop_and_like(driver=None, max_like=50):
     return driver
 
 
-def mass_like_and_comment(driver=None, search_items=None, max_like=50, max_comment=50, search_tags=False):
+def mass_like_and_comment(driver=None, search_items=None, comment_items=None, max_like=50, max_comment=50, search_tags=False):
     for each_search_item in search_items:
         if search_tags:
             each_search_item = each_search_item if str(each_search_item).startswith('#') else '#' + each_search_item
             driver = search_ins_tags(driver=driver, tag_input=each_search_item)
-            driver = loop_and_like(driver=driver)
+            driver = loop_and_like(driver=driver, comment_items=comment_items)
     return driver
 
 
@@ -131,7 +131,7 @@ class Command(BaseCommand):
         driver = ins_login(user_name='a.wen.z')
 
         # Search Keyword
-        driver = mass_like_and_comment(driver=driver, search_items=random.sample(ins_tags['a.wen.z'], 20), search_tags=True)
+        driver = mass_like_and_comment(driver=driver, search_items=random.sample(ins_tags['a.wen.z'], 20), comment_items=ins_comments['a.wen.z'], search_tags=True)
 
         driver.close()
 
