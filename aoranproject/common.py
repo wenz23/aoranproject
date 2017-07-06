@@ -36,3 +36,6 @@ def request(url=None, proxy=False, counter=0, max_request=5):
                 print("Request Max Times, URL: ", url, ', Error: ', e)
             else:
                 request(url=url, proxy=proxy, counter=counter + 1, max_request=max_request)
+
+
+def ins_lambda_request(usr=None, proxy=False):

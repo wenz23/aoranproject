@@ -21,8 +21,14 @@ class SocialDetails(models.Model):
     parse_state         = models.PositiveIntegerField(default=StateEnum.New, db_index=True)
     tags                = JSONField(blank=True, null=True, db_index=True)
 
+
+class SocialTracking(models.Model):
+
     # General
+    created_at          = models.DateTimeField(auto_now_add=True, db_index=True)
     social_media_type   = models.CharField(max_length=20, blank=False, null=False, db_index=True)
+    tags                = JSONField(blank=True, null=True, db_index=True)
+    url                 = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
 
     # Instagram
     ins_fullname        = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
