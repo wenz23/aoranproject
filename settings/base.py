@@ -17,6 +17,8 @@ SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+SETTINGS_DIR = os.path.dirname(__file__)
+# PROJECT_DIR = os.path.abspath(os.path.join(SETTINGS_DIR, os.pardir))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -36,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'settings',
     'crawl',
 ]
 

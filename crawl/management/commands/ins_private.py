@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
-from settings.local import ins_passwords, ins_tags, ins_comments
+from settings.production import ins_passwords, ins_tags, ins_comments
 
 
 def ins_login(user_name=None):
