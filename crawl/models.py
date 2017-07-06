@@ -12,7 +12,7 @@ class StateEnum(object):
     Parse_Failed    = 700
 
 
-class SocialDetails(models.Model):
+class YouTubeDetails(models.Model):
     created_at          = models.DateTimeField(auto_now_add=True, db_index=True)
     social_id           = models.CharField(max_length=2000, blank=False, null=False, db_index=True)
     url_after_req       = models.CharField(max_length=2000, blank=True, null=True, db_index=True)

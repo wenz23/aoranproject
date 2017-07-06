@@ -1,24 +1,13 @@
-# -*- coding: utf-8 -*
-
-
-import time
-
-import random
-import simplejson as json
+from aoranproject.common import api_gateway, lambda_request
 from django.core.management.base import BaseCommand
-from crawl.models import SocialDetails
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
+import datetime
 
-from settings.production import ins_passwords, ins_tags, ins_comments
 
 class Command(BaseCommand):
-    help = ''
 
     def handle(self, *args, **kwargs):
+        start_time = datetime.datetime.now()
+        print(lambda_request(username="a.wen.z", use_proxy="False", social_type="ins"))
+        print(datetime.datetime.now() - start_time)
 
-        descr = [am for am in SocialDetails.objects.filter(details__isnull=False)]
-        for i in descr:
-            descr_text = json.loads(i.details)
 

@@ -1,4 +1,8 @@
 import requests
+import urllib3
+from settings.production import api_gateway
+
+urllib3.disable_warnings()
 
 
 def request(url=None, proxy=False, counter=0, max_request=5):
@@ -38,4 +42,13 @@ def request(url=None, proxy=False, counter=0, max_request=5):
                 request(url=url, proxy=proxy, counter=counter + 1, max_request=max_request)
 
 
-def ins_lambda_request(usr=None, proxy=False):
+def lambda_request(username=None, use_proxy=False, social_type=None):
+    header = {'username': username,
+              'social_type': social_type,
+              'use_proxy': str(use_proxy),
+              'x-api-key': api_gateway['CrawlerAPIKey'][0]}
+
+    req = requests.request('GET',
+                           url=api_gateway['CrawlerAPIKey'][1],
+                           headers=header, timeout=5, verify=False)
+    return req.content
