@@ -91,17 +91,18 @@ def loop_and_like(driver=None, max_like=50, comment_items=None):
         except:
             pass
         # Comment
-        try:
-            driver.find_element_by_xpath("//textarea[contains(@aria-label,'Add a comment…')]").click()
-            comment_input = driver.find_element_by_xpath("//textarea[contains(@aria-label,'Add a comment…')]")
-            for i in random.choice(comment_items):
-                comment_input.send_keys(i)
-                time.sleep(random.uniform(0.2, 0.6))
-            comment_input.send_keys(Keys.RETURN)
-            time.sleep(random.uniform(4, 6))
+        if comment_items:
+            try:
+                driver.find_element_by_xpath("//textarea[contains(@aria-label,'Add a comment…')]").click()
+                comment_input = driver.find_element_by_xpath("//textarea[contains(@aria-label,'Add a comment…')]")
+                for i in random.choice(comment_items):
+                    comment_input.send_keys(i)
+                    time.sleep(random.uniform(0.2, 0.6))
+                comment_input.send_keys(Keys.RETURN)
+                time.sleep(random.uniform(4, 6))
 
-        except:
-            pass
+            except:
+                pass
         driver.find_element_by_xpath("//a[contains(@class,'coreSpriteRightPaginationArrow')]").click()
         time.sleep(random.uniform(2.5, 4.5))
         if like_counter % 10 == 0:
@@ -128,10 +129,10 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
 
         # Login
-        driver = ins_login(user_name='a.wen.z')
+        driver = ins_login(user_name='a.wen.z')  # a.wen.z
 
         # Search Keyword
-        driver = mass_like_and_comment(driver=driver, search_items=random.sample(ins_tags['a.wen.z'], 20), comment_items=ins_comments['a.wen.z'], search_tags=True)
+        driver = mass_like_and_comment(driver=driver, search_items=random.sample(ins_tags['a.wen.z'], 20),  search_tags=True)  # comment_items=ins_comments['a.wen.z'],
 
         driver.close()
 

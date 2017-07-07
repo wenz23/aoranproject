@@ -57,8 +57,8 @@ def lambda_crawler_request(username=None, use_proxy=False, social_type=None):
 def ins_clean_url(url=None, return_id=False):
     try:
         temp_id = url.split('?')[0].split('instagram.com')[1].replace('/', '')
-        if temp_id == '' or temp_id is None or temp_id != ' ':
-            return temp_id
+        if temp_id == '' or temp_id is None or temp_id == ' ':
+            return None
 
         if return_id:
                 return temp_id

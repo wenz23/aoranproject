@@ -19,17 +19,24 @@ def find_similars(source_type=None):
                                                                           defaults={'created_at': timezone.now()})
 
 
-def load_user_to_tracking_table():
+def load_new_ins_user_to_tracking_table():
+    new_ins_user_list = []
     starting_list_temp = [json.loads(am.details)['related_links'] for am in YouTubeDetails.objects.filter(parse_state=600)]
     starting_list = [item for sublist in starting_list_temp for item in sublist]
 
     for i in starting_list:
-        if 'www.instagram.com' in i:
-            print(ins_clean_url(url=i))
+        if str('www.instagram.com') in i:
+            clean_url = ins_clean_url(url=i)
+            if clean_url is not None and clean_url != str('https://www.instagram.com//'):
+                new_ins_user_list.append(clean_url)
+    new_ins_user_list = list(set(new_ins_user_list))
+
+    for i in new_ins_user_list:
+
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         # find_similars('YouTube')
-        load_user_to_tracking_table()
+        load_new_ins_user_to_tracking_table()

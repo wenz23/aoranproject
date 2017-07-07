@@ -35,10 +35,12 @@ class SocialTracking(models.Model):
     ins_id              = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_follower_count  = models.PositiveIntegerField(blank=True, null=True, db_index=True)
     ins_following_count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    ins_post_count      = models.PositiveIntegerField(blank=True, null=True, db_index=True)
+    ins_media_count     = models.PositiveIntegerField(blank=True, null=True, db_index=True)
     ins_biography       = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_external_url    = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_recent_12_meta  = JSONField(blank=True, null=True, db_index=True)
+    ins_verified        = models.BooleanField(default=False, db_index=True)
+    ins_private         = models.BooleanField(default=False, db_index=True)
     ins_json            = JSONField(blank=True, null=True, db_index=True)
 
     # YouTube
