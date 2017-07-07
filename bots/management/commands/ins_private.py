@@ -83,11 +83,11 @@ def loop_and_like(driver=None, max_like=50, comment_items=None):
 
     # While loop
     while driver.find_element_by_xpath("//a[contains(@class,'coreSpriteRightPaginationArrow')]"):
-        time.sleep(random.uniform(2.5, 4.5))
+        time.sleep(random.uniform(4, 5))
         try:
             driver.find_element_by_xpath("//span[contains(@class,'coreSpriteHeartOpen')]").click()
             like_counter += 1
-            time.sleep(random.uniform(2.5, 4.5))
+            time.sleep(random.uniform(1.5, 2.5))
         except:
             pass
         # Comment
@@ -98,7 +98,7 @@ def loop_and_like(driver=None, max_like=50, comment_items=None):
                 comment_input.send_keys(i)
                 time.sleep(random.uniform(0.2, 0.6))
             comment_input.send_keys(Keys.RETURN)
-            time.sleep(random.uniform(2, 3))
+            time.sleep(random.uniform(4, 6))
 
         except:
             pass
