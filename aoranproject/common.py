@@ -42,7 +42,7 @@ def request(url=None, proxy=False, counter=0, max_request=5):
                 request(url=url, proxy=proxy, counter=counter + 1, max_request=max_request)
 
 
-def lambda_request(username=None, use_proxy=False, social_type=None):
+def lambda_crawler_request(username=None, use_proxy=False, social_type=None):
     header = {'username': username,
               'social_type': social_type,
               'use_proxy': str(use_proxy),
@@ -52,3 +52,18 @@ def lambda_request(username=None, use_proxy=False, social_type=None):
                            url=api_gateway['CrawlerAPIKey'][1],
                            headers=header, timeout=5, verify=False)
     return req.content
+
+
+def ins_clean_url(url=None, return_id=False):
+    try:
+        temp_id = url.split('?')[0].split('instagram.com')[1].replace('/', '')
+        if temp_id == '' or temp_id is None or temp_id != ' ':
+            return temp_id
+
+        if return_id:
+                return temp_id
+        else:
+            return 'https://www.instagram.com/' + url.split('?')[0].split('instagram.com')[1].replace('/', '') + '/'
+    except Exception as e:
+        print('Parse ins url failed; URL:' + url + '; Error: ' + str(e))
+        return None
