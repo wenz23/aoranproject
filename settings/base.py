@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'settings',
     'crawl',
+    'bots',
 ]
 
 MIDDLEWARE = [

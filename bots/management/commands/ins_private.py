@@ -18,7 +18,7 @@ def ins_login(user_name=None):
         opts.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 "
                           "(KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36")
         opts.add_argument("window-size=1500,800")
-        driver = webdriver.Chrome(chrome_options=opts)
+        driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=opts)
 
         # Login
         driver.get("https://www.instagram.com/")
