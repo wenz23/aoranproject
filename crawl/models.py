@@ -22,6 +22,13 @@ class YouTubeDetails(models.Model):
     tags                = JSONField(blank=True, null=True, db_index=True)
 
 
+class InsSimilarPeople(models.Model):
+    created_at          = models.DateTimeField(auto_now_add=True, db_index=True)
+    re_visited_at       = models.DateTimeField(blank=True, null=True, db_index=True)
+    ins_url             = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    ins_similar_people  = JSONField(blank=True, null=True)
+
+
 class SocialTracking(models.Model):
 
     # General
@@ -38,10 +45,10 @@ class SocialTracking(models.Model):
     ins_media_count     = models.PositiveIntegerField(blank=True, null=True, db_index=True)
     ins_biography       = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_external_url    = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ins_recent_12_meta  = JSONField(blank=True, null=True, db_index=True)
+    ins_recent_12_meta  = JSONField(blank=True, null=True)
     ins_verified        = models.BooleanField(default=False, db_index=True)
     ins_private         = models.BooleanField(default=False, db_index=True)
-    ins_json            = JSONField(blank=True, null=True, db_index=True)
+    ins_json            = JSONField(blank=True, null=True)
 
     # YouTube
     ytb_username        = models.CharField(max_length=2000, blank=True, null=True, db_index=True)

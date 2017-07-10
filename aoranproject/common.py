@@ -50,14 +50,14 @@ def lambda_crawler_request(username=None, use_proxy=False, social_type=None):
 
     req = requests.request('GET',
                            url=api_gateway['CrawlerAPIKey'][1],
-                           headers=header, timeout=5, verify=False)
-    return req.content
+                           headers=header, timeout=15, verify=False)
+    return req
 
 
 def ins_clean_url(url=None, return_id=False):
     try:
         temp_id = url.split('?')[0].split('instagram.com')[1].replace('/', '')
-        if temp_id == '' or temp_id is None or temp_id == ' ':
+        if temp_id == '' or temp_id is None or temp_id == ' ' or temp_id == '/' or temp_id == '//':
             return None
 
         if return_id:

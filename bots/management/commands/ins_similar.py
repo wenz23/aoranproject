@@ -5,11 +5,13 @@ import time
 
 import random
 from django.core.management.base import BaseCommand
+from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
-from settings.production import ins_passwords, ins_tags, ins_comments
+from crawl.models import InsSimilarPeople
+from settings.production import ins_passwords
 
 
 def ins_login(user_name=None):
@@ -58,71 +60,6 @@ def ins_login(user_name=None):
         return None
 
 
-def search_ins_tags(tag_input=None, driver=None):
-    time.sleep(random.uniform(2, 4))
-    driver.find_element_by_xpath("//*[@id='react-root']/section/nav/div/div/div/div[2]/div/div/span[2]").click()
-    input_box = driver.find_element_by_xpath("//*[@id='react-root']/section/nav/div/div/div/div[2]/input")
-    for i in tag_input:
-        time.sleep(random.uniform(0.4, 0.7))
-        input_box.send_keys(i)
-
-    time.sleep(random.uniform(1, 2))
-    input_box.send_keys(Keys.ENTER)
-    time.sleep(random.uniform(3, 6))
-    print('Search Tag:', tag_input)
-    return driver
-
-
-def loop_and_like(driver=None, max_like=50, comment_items=None):
-
-    # Click initial picture
-    time.sleep(random.uniform(2.5, 4.5))
-    driver.find_elements_by_xpath("//a[contains(@href,'/p/')]")[0].click()
-    like_counter = 0
-    time.sleep(random.uniform(2.5, 4.5))
-
-    # While loop
-    while driver.find_element_by_xpath("//a[contains(@class,'coreSpriteRightPaginationArrow')]"):
-        time.sleep(random.uniform(4, 5))
-        try:
-            driver.find_element_by_xpath("//span[contains(@class,'coreSpriteHeartOpen')]").click()
-            like_counter += 1
-            time.sleep(random.uniform(1.5, 2.5))
-        except:
-            pass
-        # Comment
-        if comment_items:
-            try:
-                driver.find_element_by_xpath("//textarea[contains(@aria-label,'Add a comment…')]").click()
-                comment_input = driver.find_element_by_xpath("//textarea[contains(@aria-label,'Add a comment…')]")
-                for i in random.choice(comment_items):
-                    comment_input.send_keys(i)
-                    time.sleep(random.uniform(0.2, 0.6))
-                comment_input.send_keys(Keys.RETURN)
-                time.sleep(random.uniform(4, 6))
-
-            except:
-                pass
-        driver.find_element_by_xpath("//a[contains(@class,'coreSpriteRightPaginationArrow')]").click()
-        time.sleep(random.uniform(2.5, 4.5))
-        if like_counter % 10 == 0:
-            print(like_counter)
-        if like_counter > max_like:
-            break
-    driver.find_element_by_xpath("/html/body/div[2]/div/button").click()
-    time.sleep(random.uniform(2.5, 4.5))
-    return driver
-
-
-def mass_like_and_comment(driver=None, search_items=None, comment_items=None, max_like=50, max_comment=50, search_tags=False):
-    for each_search_item in search_items:
-        if search_tags:
-            each_search_item = each_search_item if str(each_search_item).startswith('#') else '#' + each_search_item
-            driver = search_ins_tags(driver=driver, tag_input=each_search_item)
-            driver = loop_and_like(driver=driver, comment_items=comment_items)
-    return driver
-
-
 def mass_find_similar(driver=None, people_list=None):
     if people_list:
         for i in people_list:
@@ -133,13 +70,19 @@ def mass_find_similar(driver=None, people_list=None):
 def loop_similar_people(driver=None, max_loop=5):
     counter = 0
     try:
-        time.sleep(random.uniform(2, 4))
-        driver.find_element_by_xpath("//div[contains(@class,'coreSpriteDropdownArrowGrey9')]").click()
+        time.sleep(random.uniform(4, 6))
+        driver.find_element_by_xpath("//div[contains(@class,'coreSpriteDropdownArrowWhite')]").click()
         time.sleep(random.uniform(3, 4))
         while counter < max_loop:
             counter += 1
             new_guys = [am.get_attribute('href') for am in
                         driver.find_elements_by_xpath("//a[contains(@style,'width: 54px; height: 54px;')]")]
+            for i in new_guys:
+                isp_obj, created = InsSimilarPeople.objects.get_or_create(ins_url=i)
+                if not created:
+                    isp_obj.re_visited_at = timezone.now()
+                    isp_obj.save()
+
             try:
                 driver.find_elements_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]")[1].click()
                 time.sleep(random.uniform(3, 4))
@@ -183,13 +126,6 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
 
         # Login
-        driver = ins_login(user_name='a.wen.z')  # a.wen.z
-
-        # Search Keyword
-        # driver = mass_like_and_comment(driver=driver, search_items=random.sample(ins_tags['a.wen.z'], 20),  search_tags=True)  # comment_items=ins_comments['a.wen.z'],
-
-        driver = search_ins_people(driver=driver, people_input='starbucks')
+        driver = ins_login(user_name='ranaoyang@outlook.com')  # a.wen.z
+        driver = search_ins_people(driver=driver, people_input='chia_habte')
         driver.close()
-
-
-

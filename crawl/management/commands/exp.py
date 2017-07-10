@@ -38,11 +38,11 @@ def get_ins_info_load_tracking_table(ins_username=None):
     try:
         is_verified = dictionary['entry_data']['ProfilePage'][0]['user']['is_verified']
     except:
-        is_verified = None
+        is_verified = False
     try:
         is_private = dictionary['entry_data']['ProfilePage'][0]['user']['is_private']
     except:
-        is_private = None
+        is_private = False
     try:
         recent_12 = dictionary['entry_data']['ProfilePage'][0]['user']['media']['nodes']
     except:
@@ -52,7 +52,9 @@ def get_ins_info_load_tracking_table(ins_username=None):
         st_obj = SocialTracking(ins_id=user_id, ins_biography=bio, ins_external_url=ext_url,
                                 ins_follower_count=follower_count, ins_following_count=following_count,
                                 ins_recent_12_meta=loads(recent_12), ins_fullname=full_name,
-                                ins_post_count=media_count, ins)
+                                ins_media_count=media_count, ins_verified=is_verified, ins_private=is_private,
+                                ins_json=dictionary)
+        st_obj.save()
 
 
 class Command(BaseCommand):
