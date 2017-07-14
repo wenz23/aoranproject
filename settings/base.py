@@ -27,7 +27,7 @@ SETTINGS_DIR = os.path.dirname(__file__)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'52.53.131.130', u'lookingfor.company']
+ALLOWED_HOSTS = [u'52.53.131.130', u'lookingfor.company', '127.0.0.1']
 
 
 # Application definition
@@ -133,7 +133,7 @@ LOGGING = {
         'logfile': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': SITE_ROOT + "/../info.log",
+            'filename': SITE_ROOT + "/../logs/django.log",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
