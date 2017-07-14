@@ -41,7 +41,6 @@ server {
     location / {
         # an HTTP header important enough to have its own Wikipedia entry:
         #   http://en.wikipedia.org/wiki/X-Forwarded-For
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
         # enable this if and only if you use HTTPS, this helps Rack
         # set the proper protocol for doing redirects:
@@ -73,7 +72,6 @@ server {
         proxy_set_header   Accept-Encoding '';
         proxy_ignore_headers Cache-Control Expires;
         proxy_set_header   Referer $http_referer;
-        proxy_set_header   Host   $host;
         proxy_set_header   Cookie $http_cookie;
         proxy_set_header   X-Real-IP  $remote_addr;
         proxy_set_header X-Forwarded-Host $host;
