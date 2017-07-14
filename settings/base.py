@@ -27,7 +27,7 @@ SETTINGS_DIR = os.path.dirname(__file__)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'52.53.131.130']
+ALLOWED_HOSTS = [u'52.53.131.130', u'lookingfor.company']
 
 
 # Application definition
