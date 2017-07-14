@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
+
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -112,6 +113,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = ''
+STATICFILES_DIRS = (os.path.join('static'), )
 
 LOGGING = {
     'version': 1,
