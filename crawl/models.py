@@ -38,6 +38,7 @@ class SocialTracking(models.Model):
     url                 = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
 
     # Instagram
+    ins_username          = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_fullname        = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_id              = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_follower_count  = models.PositiveIntegerField(blank=True, null=True, db_index=True)
@@ -49,6 +50,7 @@ class SocialTracking(models.Model):
     ins_verified        = models.BooleanField(default=False, db_index=True)
     ins_private         = models.BooleanField(default=False, db_index=True)
     ins_json            = JSONField(blank=True, null=True)
+    ins_find_similar    = models.BooleanField(default=False, db_index=True)
 
     # YouTube
     ytb_username        = models.CharField(max_length=2000, blank=True, null=True, db_index=True)

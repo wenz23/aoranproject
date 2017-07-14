@@ -2,7 +2,7 @@
 
 
 import time
-
+from json import loads, dumps
 import random
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -10,7 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
-from crawl.models import InsSimilarPeople
+from crawl.models import InsSimilarPeople, SocialTracking
 from settings.production import ins_passwords
 
 
@@ -67,7 +67,7 @@ def mass_find_similar(driver=None, people_list=None):
     pass
 
 
-def loop_similar_people(driver=None, max_loop=5):
+def loop_similar_people(driver=None, max_loop=5, people_input=None):
     counter = 0
     try:
         time.sleep(random.uniform(4, 6))
@@ -79,6 +79,7 @@ def loop_similar_people(driver=None, max_loop=5):
                         driver.find_elements_by_xpath("//a[contains(@style,'width: 54px; height: 54px;')]")]
             for i in new_guys:
                 isp_obj, created = InsSimilarPeople.objects.get_or_create(ins_url=i)
+                isp_obj.ins_similar_people = dumps({'from': str(people_input.ins_username), 'date': str(timezone.now().date())})
                 if not created:
                     isp_obj.re_visited_at = timezone.now()
                     isp_obj.save()
@@ -89,6 +90,8 @@ def loop_similar_people(driver=None, max_loop=5):
             except:
                 driver.find_element_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]").click()
                 time.sleep(random.uniform(3, 4))
+        people_input.ins_find_similar = True
+        people_input.save()
         return driver
     except Exception as e:
         print(e)
@@ -98,9 +101,11 @@ def loop_similar_people(driver=None, max_loop=5):
 
 def type_in_search_box(driver=None, type_input=None):
     if driver and type_input:
-        time.sleep(random.uniform(2, 4))
-        driver.find_element_by_xpath("//*[@id='react-root']/section/nav/div/div/div/div[2]/div/div/span[2]").click()
-        input_box = driver.find_element_by_xpath("//*[@id='react-root']/section/nav/div/div/div/div[2]/input")
+        # time.sleep(random.uniform(2, 4))
+        # driver.execute_script("window.scrollTo(0," + str(random.randint(80, 140)) + ")")
+        time.sleep(random.uniform(3, 4))
+        driver.find_element_by_xpath("//span[contains(@class,'coreSpriteSearchIcon')]").click()
+        input_box = driver.find_element_by_xpath("//input[contains(@placeholder, 'Search')]")
         for i in type_input:
             time.sleep(random.uniform(0.4, 0.7))
             input_box.send_keys(i)
@@ -114,8 +119,8 @@ def type_in_search_box(driver=None, type_input=None):
 def search_ins_people(driver=None, people_input=None):
 
     if driver and people_input:
-        driver = type_in_search_box(driver=driver, type_input=people_input)
-        driver = loop_similar_people(driver=driver)
+        driver = type_in_search_box(driver=driver, type_input=people_input.ins_username)
+        driver = loop_similar_people(driver=driver, people_input=people_input)
 
         return driver
 
@@ -125,7 +130,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
 
+        ins_people_list = [am for am in SocialTracking.objects.filter(social_media_type='Instagram', ins_username__isnull=False, ins_find_similar=False).order_by('created_at')[:50]]
+
         # Login
         driver = ins_login(user_name='ranaoyang@outlook.com')  # a.wen.z
-        driver = search_ins_people(driver=driver, people_input='chia_habte')
+
+        for i in ins_people_list:
+            driver = search_ins_people(driver=driver, people_input=i)
         driver.close()

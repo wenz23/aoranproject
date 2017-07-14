@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'settings',
     'crawl',
     'bots',
+    'website',
 ]
 
 MIDDLEWARE = [

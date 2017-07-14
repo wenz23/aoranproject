@@ -83,6 +83,8 @@ def get_ins_info_load_tracking_table(ins_username=None):
         if created:
             st_obj.ins_biography = bio
             st_obj.url = str('https://www.instagram.com/')+str(ins_username)+str('/')
+            st_obj.ins_username = str(ins_username)
+            st_obj.social_media_type = 'Instagram'
             st_obj.ins_external_url = ext_url
             st_obj.ins_follower_count = follower_count
             st_obj.ins_following_count = following_count
@@ -146,7 +148,7 @@ def load_new_ins_user_to_tracking_table():
                 worker.start()
                 time.sleep(0.1)
             else:
-                time.sleep(150)
+                time.sleep(190)
         except Exception as e:
             print(e)
 
