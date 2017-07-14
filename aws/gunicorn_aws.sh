@@ -1,6 +1,6 @@
 #!/bin/bash
 
-exec /usr/local/bin/gunicorn aoranproject.wsgi:application \
+exec /usr/bin/gunicorn aoranproject.wsgi:application \
 --name aoranproject \
 --workers 3 \
 --timeout 3600 \
