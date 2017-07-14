@@ -4,5 +4,5 @@ echo Reset gunicorn	# This is a comment, too!
 PID=`ps -ef | grep python | grep -v "grep" | awk '{print $2}'`
 echo $PID
 kill -9 $PID
-. /var/ftapps/gunicorn_aws.sh &>/dev/null &
+. /var/Influencer_Tracking/gunicorn_aws.sh &>/dev/null &
 service nginx restart

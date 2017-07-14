@@ -3,25 +3,25 @@ upstream aoran_server {
   # to return a good HTTP response (in case the Unicorn master nukes a
   # single worker for timing out).
 
-  server unix:/var/ftapps/ftapps.sock fail_timeout=0;
+  server unix:/var/Influencer_Tracking/aoranproject.sock fail_timeout=0;
 }
 
 server {
 
     listen   80;
-    server_name ftbase.com
+    server_name lookingfor.company
 
     client_max_body_size 8G;
 
-    access_log /var/ftapps/logs/debug.log;
-    error_log /var/ftapps/logs/error.log;
+    access_log /var/Influencer_Tracking/logs/debug.log;
+    error_log /var/Influencer_Tracking/logs/error.log;
  
     location /static/ {
-        alias   /var/ftapps/static/;
+        alias   /var/Influencer_Tracking/static/;
     }
     
     location /media/ {
-        alias   /var/ftapps/static/;
+        alias   /var/Influencer_Tracking/static/;
     }
 
     location / {
@@ -69,7 +69,7 @@ server {
         # Try to serve static files from nginx, no point in making an
         # *application* server like Unicorn/Rainbows! serve static files.
         if (!-f $request_filename) {
-            proxy_pass http://ftapps_server;
+            proxy_pass http://Influencer_Tracking;
             break;
         }
     }
@@ -77,6 +77,6 @@ server {
     # Error pages
     error_page 500 502 503 504 /500.html;
     location = /500.html {
-        root /var/ftapps/static/;
+        root /var/Influencer_Tracking/static/;
     }
 }
