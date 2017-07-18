@@ -55,19 +55,19 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="#download">Products</a>
+                        <a class="page-scroll" href="#download">Our Data</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#features">Features</a>
+                        <a class="page-scroll" href="#features">Our Service</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
                     </li>
                 </ul>
             </div>
-            <!-- /.navbar-collapse -->
+
         </div>
-        <!-- /.container-fluid -->
+
     </nav>
 
     <header>
@@ -77,15 +77,14 @@
                     <div class="header-content">
                         <div class="header-content-inner">
                             <div style="display: inline-block"><h1>Find Your  </h1></div>
-                            <div id="content-1" style="display: inline-block"><h1> Next Opportunity</h1></div>
-                            <div id="content-2" style="display: inline-block"><h1> Next Acquisition</h1></div>
-                            <div id="content-3" style="display: inline-block"><h1> Next Hot Startup</h1></div>
+                            <div id="content-1" style="display: inline-block"><h1>Next Opportunity</h1></div>
+                            <div id="content-2" style="display: inline-block"><h1>Next Acquisition</h1></div>
+                            <div id="content-3" style="display: inline-block"><h1>Next Hot Startup</h1></div>
                             <div id="content-4" style="display: inline-block"><h1>Next Investment</h1></div>
                             <div id="content-5" style="display: inline-block"><h1>Next Customer</h1></div>
                             <div id="content-6" style="display: inline-block"><h1>Fortune 500 of Tomorrow</h1></div>
                             <div id="content-7" style="display: inline-block"><h1>Your Competitor's Strategy</h1></div>
                             <div><a href="#contact" class="btn btn-outline btn-xl page-scroll">Contact For More Information!</a></div>
-{#                            <a href="#download" class="btn btn-outline btn-xl page-scroll">Contact For More Information!</a>#}
                         </div>
 
                     </div>
@@ -99,7 +98,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <div>
-                        <img src="/static/img/lead-generation.png" class="img-responsive" alt="">
+                        <img src="/static/img/our-data.png" class="img-responsive" alt="">
                     </div>
                 </div>
             </div>
@@ -215,11 +214,13 @@
     <script src="/static/js/new-age.min.js"></script>
 
 </body>
+
 <script>
-                            var divs = $('div[id^="content-"]').hide(), i = 0;
-                            (function cycle() {
-                                divs.eq(i).fadeIn(400).delay(2000).fadeOut(400, cycle);
-                                i = ++i % divs.length;
-                            })();
-                        </script>
+    var divs = $('div[id^="content-"]').hide(), i = 0;
+    (function cycle() {
+        divs.eq(i).fadeIn(400).delay(2000).fadeOut(400, cycle);
+        i = ++i % divs.length;
+    })();
+</script>
+
 </html>
