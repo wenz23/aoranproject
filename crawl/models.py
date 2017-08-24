@@ -22,20 +22,20 @@ class YouTubeDetails(models.Model):
     tags                = JSONField(blank=True, null=True, db_index=True)
 
 
-class InsSimilarPeople(models.Model):
+class ProcessInstagram(models.Model):
     created_at          = models.DateTimeField(auto_now_add=True, db_index=True)
-    re_visited_at       = models.DateTimeField(blank=True, null=True, db_index=True)
+    last_visited_at     = models.DateTimeField(blank=True, null=True, db_index=True)
+    last_follower_count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
     ins_url             = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ins_similar_people  = JSONField(blank=True, null=True)
+    ins_find_similar    = models.BooleanField(default=False, db_index=True)
+    ins_tags            = JSONField(blank=True, null=True, db_index=True)
 
 
 class SocialTracking(models.Model):
 
     # General
     created_at          = models.DateTimeField(auto_now_add=True, db_index=True)
-    social_media_type   = models.CharField(max_length=20, blank=False, null=False, db_index=True)
-    tags                = JSONField(blank=True, null=True, db_index=True)
-    url                 = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    profile_url         = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
 
     # Instagram
     ins_username          = models.CharField(max_length=2000, blank=True, null=True, db_index=True)

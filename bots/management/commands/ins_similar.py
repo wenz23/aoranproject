@@ -10,7 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
-from crawl.models import InsSimilarPeople, SocialTracking
+from crawl.models import ProcessInstagram, SocialTracking
 from settings.production import ins_passwords
 
 
@@ -78,7 +78,7 @@ def loop_similar_people(driver=None, max_loop=5, people_input=None):
             new_guys = [am.get_attribute('href') for am in
                         driver.find_elements_by_xpath("//a[contains(@style,'width: 54px; height: 54px;')]")]
             for i in new_guys:
-                isp_obj, created = InsSimilarPeople.objects.get_or_create(ins_url=i)
+                isp_obj, created = ProcessInstagram.objects.get_or_create(ins_url=i)
                 isp_obj.ins_similar_people = dumps({'from': str(people_input.ins_username), 'date': str(timezone.now().date())})
                 if not created:
                     isp_obj.re_visited_at = timezone.now()
@@ -109,8 +109,12 @@ def type_in_search_box(driver=None, type_input=None):
         for i in type_input:
             time.sleep(random.uniform(0.4, 0.7))
             input_box.send_keys(i)
+        # Enter Twice
         time.sleep(random.uniform(2, 4))
         input_box.send_keys(Keys.ENTER)
+        time.sleep(random.uniform(2, 4))
+        input_box.send_keys(Keys.ENTER)
+
         time.sleep(random.uniform(5, 6))
         print('Search:', type_input)
     return driver
@@ -119,8 +123,16 @@ def type_in_search_box(driver=None, type_input=None):
 def search_ins_people(driver=None, people_input=None):
 
     if driver and people_input:
-        driver = type_in_search_box(driver=driver, type_input=people_input.ins_username)
-        driver = loop_similar_people(driver=driver, people_input=people_input)
+        try:
+            driver = type_in_search_box(driver=driver, type_input=people_input.ins_username)
+        except:
+            print('Search Error')
+            pass
+        try:
+            driver = loop_similar_people(driver=driver, people_input=people_input)
+        except:
+            print('Loop Error')
+            pass
 
         return driver
 
@@ -130,7 +142,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
 
-        ins_people_list = [am for am in SocialTracking.objects.filter(social_media_type='Instagram', ins_username__isnull=False, ins_find_similar=False).order_by('created_at')[:50]]
+        ins_people_list = [am for am in SocialTracking.objects.filter(social_media_type='Instagram',
+                                                                      ins_username__isnull=False,
+                                                                      ins_find_similar=False,
+                                                                      ins_follower_count__gt=3000
+                                                                      ).order_by('created_at')[:50]]
 
         # Login
         driver = ins_login(user_name='ranaoyang@outlook.com')  # a.wen.z
