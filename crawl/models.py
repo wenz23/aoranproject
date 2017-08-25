@@ -12,51 +12,32 @@ class StateEnum(object):
     Parse_Failed    = 700
 
 
-class YouTubeDetails(models.Model):
-    created_at          = models.DateTimeField(auto_now_add=True, db_index=True)
-    social_id           = models.CharField(max_length=2000, blank=False, null=False, db_index=True)
-    url_after_req       = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    source_type         = models.CharField(max_length=20, blank=False, null=False, db_index=True)
-    details             = JSONField(blank=True, null=True)
-    parse_state         = models.PositiveIntegerField(default=StateEnum.New, db_index=True)
-    tags                = JSONField(blank=True, null=True, db_index=True)
+class InstagramMap(models.Model):
+    created_at              = models.DateTimeField(auto_now_add=True, db_index=True)
+    ins_id                  = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    latest_visited_at       = models.DateTimeField(blank=True, null=True, db_index=True, auto_now=True)
+    latest_follower_count   = models.PositiveIntegerField(blank=True, null=True, db_index=True)
+    latest_username         = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    ins_find_similar        = models.BooleanField(default=False, db_index=True)
+    ins_tags                = JSONField(blank=True, null=True, db_index=True)
 
 
-class ProcessInstagram(models.Model):
-    created_at          = models.DateTimeField(auto_now_add=True, db_index=True)
-    last_visited_at     = models.DateTimeField(blank=True, null=True, db_index=True)
-    last_follower_count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    ins_url             = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ins_find_similar    = models.BooleanField(default=False, db_index=True)
-    ins_tags            = JSONField(blank=True, null=True, db_index=True)
-
-
-class SocialTracking(models.Model):
+class InstagramTracking(models.Model):
 
     # General
-    created_at          = models.DateTimeField(auto_now_add=True, db_index=True)
-    profile_url         = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    created_at              = models.DateTimeField(auto_now_add=True, db_index=True)
+    profile_url             = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
 
     # Instagram
-    ins_username          = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ins_fullname        = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ins_id              = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ins_follower_count  = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    ins_following_count = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    ins_media_count     = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    ins_biography       = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ins_external_url    = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ins_recent_12_meta  = JSONField(blank=True, null=True)
-    ins_verified        = models.BooleanField(default=False, db_index=True)
-    ins_private         = models.BooleanField(default=False, db_index=True)
-    ins_json            = JSONField(blank=True, null=True)
-    ins_find_similar    = models.BooleanField(default=False, db_index=True)
-
-    # YouTube
-    ytb_username        = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ytb_subscribers     = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    ytb_views           = models.PositiveIntegerField(blank=True, null=True, db_index=True)
-    ytb_description     = models.CharField(max_length=3000, blank=True, null=True, db_index=True)
-    ytb_business        = models.BooleanField(default=False, db_index=True)
-    ytb_country         = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ytb_related_links   = JSONField(blank=True, null=True, db_index=True)
+    ins_username            = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    ins_fullname            = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    ins_id                  = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    ins_follower_count      = models.PositiveIntegerField(blank=True, null=True, db_index=True)
+    ins_following_count     = models.PositiveIntegerField(blank=True, null=True, db_index=True)
+    ins_media_count         = models.PositiveIntegerField(blank=True, null=True, db_index=True)
+    ins_biography           = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    ins_external_url        = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    ins_recent_12_meta      = JSONField(blank=True, null=True)
+    ins_verified            = models.BooleanField(default=False, db_index=True)
+    ins_private             = models.BooleanField(default=False, db_index=True)
+    ins_json                = JSONField(blank=True, null=True)
