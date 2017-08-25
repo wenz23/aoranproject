@@ -4,12 +4,11 @@ from django.contrib.postgres.fields import JSONField
 
 class StateEnum(object):
     New             = 100
-    InQueue         = 110
     Req_Success     = 200
     Req_Failed      = 400
-    NotFound        = 404
     Parse_Success   = 600
     Parse_Failed    = 700
+    Standby         = 500
 
 
 class InstagramMap(models.Model):
