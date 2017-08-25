@@ -2,7 +2,7 @@
 
 
 import time
-from json import loads, dumps
+
 import random
 from django.core.management.base import BaseCommand
 from django.utils import timezone
@@ -10,7 +10,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
-from crawl.models import ProcessInstagram, SocialTracking
+from crawl.models import InstagramMap
 from settings.production import ins_passwords
 
 
@@ -63,11 +63,11 @@ def ins_login(user_name=None):
 def mass_find_similar(driver=None, people_list=None):
     if people_list:
         for i in people_list:
-            driver = search_ins_people(driver=driver, people_input=i)
+            driver = search_ins_people(driver=driver, ins_map_obj=i)
     pass
 
 
-def loop_similar_people(driver=None, max_loop=5, people_input=None):
+def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None):
     counter = 0
     try:
         time.sleep(random.uniform(4, 6))
@@ -78,11 +78,8 @@ def loop_similar_people(driver=None, max_loop=5, people_input=None):
             new_guys = [am.get_attribute('href') for am in
                         driver.find_elements_by_xpath("//a[contains(@style,'width: 54px; height: 54px;')]")]
             for i in new_guys:
-                isp_obj, created = ProcessInstagram.objects.get_or_create(ins_url=i)
-                isp_obj.ins_similar_people = dumps({'from': str(people_input.ins_username), 'date': str(timezone.now().date())})
-                if not created:
-                    isp_obj.re_visited_at = timezone.now()
-                    isp_obj.save()
+                ins_username = i.split('/')[3]
+                isp_obj, created = InstagramMap.objects.get_or_create(latest_username=ins_username)
 
             try:
                 driver.find_elements_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]")[1].click()
@@ -90,8 +87,8 @@ def loop_similar_people(driver=None, max_loop=5, people_input=None):
             except:
                 driver.find_element_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]").click()
                 time.sleep(random.uniform(3, 4))
-        people_input.ins_find_similar = True
-        people_input.save()
+        ins_map_obj.ins_find_similar = True
+        ins_map_obj.save()
         return driver
     except Exception as e:
         print(e)
@@ -120,16 +117,16 @@ def type_in_search_box(driver=None, type_input=None):
     return driver
 
 
-def search_ins_people(driver=None, people_input=None):
+def search_ins_people(driver=None, ins_map_obj=None):
 
-    if driver and people_input:
+    if driver and ins_map_obj:
         try:
-            driver = type_in_search_box(driver=driver, type_input=people_input.ins_username)
+            driver = type_in_search_box(driver=driver, type_input=ins_map_obj.latest_username)
         except:
             print('Search Error')
             pass
         try:
-            driver = loop_similar_people(driver=driver, people_input=people_input)
+            driver = loop_similar_people(driver=driver, ins_map_obj=ins_map_obj)
         except:
             print('Loop Error')
             pass
@@ -142,15 +139,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
 
-        ins_people_list = [am for am in SocialTracking.objects.filter(social_media_type='Instagram',
-                                                                      ins_username__isnull=False,
-                                                                      ins_find_similar=False,
-                                                                      ins_follower_count__gt=3000
-                                                                      ).order_by('created_at')[:50]]
+        ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=3000,
+                                                                    ins_find_similar=False
+                                                                    ).order_by('created_at')[:50]]
 
         # Login
         driver = ins_login(user_name='ranaoyang@outlook.com')  # a.wen.z
 
         for i in ins_people_list:
-            driver = search_ins_people(driver=driver, people_input=i)
+            driver = search_ins_people(driver=driver, ins_map_obj=i)
+            i.ins_find_similar = True
+            i.latest_similar_at = timezone.now()
+            i.save()
         driver.close()

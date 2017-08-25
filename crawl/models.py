@@ -15,7 +15,7 @@ class InstagramMap(models.Model):
     created_at              = models.DateTimeField(auto_now_add=True, db_index=True)
     ins_id                  = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     latest_crawl_at         = models.DateTimeField(blank=True, null=True, db_index=True)
-    latest_crawl_state      = models.PositiveIntegerField(default=StateEnum.Req_Success, blank=False, null=False, db_index=True)
+    latest_crawl_state      = models.PositiveIntegerField(default=StateEnum.New, blank=False, null=False, db_index=True)
     latest_similar_at       = models.DateTimeField(blank=True, null=True, db_index=True)
     latest_follower_count   = models.PositiveIntegerField(blank=True, null=True, db_index=True)
     latest_username         = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
@@ -24,12 +24,8 @@ class InstagramMap(models.Model):
 
 
 class InstagramTracking(models.Model):
-
-    # General
     created_at              = models.DateTimeField(auto_now_add=True, db_index=True)
     profile_url             = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-
-    # Instagram
     ins_username            = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_fullname            = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_id                  = models.CharField(max_length=2000, blank=True, null=True, db_index=True)

@@ -4,7 +4,8 @@ from datetime import date, timedelta
 from json import loads, dumps
 from queue import Queue
 from threading import Thread
-
+from django.db.models import Q
+from django.db.models import Q
 import requests
 from django.utils import timezone
 
@@ -29,7 +30,7 @@ def lambda_crawler_request(username=None, use_proxy=False, social_type=None):
         return None
 
 
-def crawl_ins_username_via_lambda(req_content=None):
+def crawl_ins_username_via_lambda(req_content=None, ins_map_obj=None):
     dictionary = loads(req_content)
 
     try:
@@ -93,6 +94,12 @@ def crawl_ins_username_via_lambda(req_content=None):
                                              ins_username=username
                                              )
         ins_tracking_obj.save()
+        ins_map_obj.latest_username = ins_tracking_obj.ins_username
+        ins_map_obj.ins_id = ins_tracking_obj.ins_id
+        ins_map_obj.latest_follower_count = ins_tracking_obj.ins_follower_count
+        ins_map_obj.latest_crawl_state = StateEnum.Parse_Success
+        ins_map_obj.latest_crawl_at = timezone.now()
+        ins_map_obj.save()
 
 
 def parse_ins_lambda_via_q(q):
@@ -108,10 +115,7 @@ def parse_ins_lambda_via_q(q):
 
             # Parse
             try:
-                crawl_ins_username_via_lambda(req_content=req_content)
-                ins_map_obj.latest_crawl_state = StateEnum.Parse_Success
-                ins_map_obj.latest_crawl_at = timezone.now()
-                ins_map_obj.save()
+                crawl_ins_username_via_lambda(req_content=req_content, ins_map_obj=ins_map_obj)
             except:
                 ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
                 ins_map_obj.save()
@@ -129,7 +133,10 @@ def activate_ins_crawl(threads=20):
     """
 
     prior_week = date.today() - timedelta(7)
-    ins_to_crawl_list = [am for am in InstagramMap.objects.all()]  # last_visited_at__gt=prior_week
+    ins_to_crawl_list = [am for am in InstagramMap.objects.filter(
+        Q(latest_crawl_state__in=[StateEnum.Parse_Failed, StateEnum.Req_Failed, StateEnum.New, StateEnum.Standby]) |
+        Q(latest_crawl_state=StateEnum.Parse_Success, latest_crawl_at__gte=prior_week)
+    )]
 
     q = Queue()
     for i in ins_to_crawl_list:
