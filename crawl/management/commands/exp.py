@@ -11,7 +11,7 @@ class Command(BaseCommand):
         objs = [am for am in InstagramTracking.objects.filter(ins_follower_count__gt=2000)]
         for i in objs:
             ins_id = i.ins_id
-            ins_username = i.ins_username
+            ins_username = i.ins_username.lower()
             follower = i.ins_follower_count
             map_obj, created = InstagramMap.objects.get_or_create(ins_id=ins_id,
                                                                   defaults={'latest_username': ins_username,

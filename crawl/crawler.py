@@ -1,9 +1,10 @@
 import threading
 import time
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from json import loads
 from queue import Queue
 from threading import Thread
+from crawl.models import StateEnum
 
 from aoranproject.common import lambda_crawler_request
 from crawl.models import InstagramMap, InstagramTracking
@@ -53,27 +54,42 @@ def crawl_ins_username_via_lambda(ins_username=None):
         recent_12 = None
 
     if user_id:
-        st_obj = InstagramTracking(ins_id=user_id,
-                                   ins_biography=bio,
-                                   ins_external_url=ext_url,
-                                   ins_follower_count=follower_count,
-                                   ins_following_count=following_count,
-                                   ins_recent_12_meta=loads(recent_12),
-                                   ins_fullname=full_name,
-                                   ins_media_count=media_count,
-                                   ins_verified=is_verified,
-                                   ins_private=is_private,
-                                   ins_json=dictionary
-                                   )
-        st_obj.save()
+        ins_tracking_obj = InstagramTracking(ins_id=user_id,
+                                             ins_biography=bio,
+                                             ins_external_url=ext_url,
+                                             ins_follower_count=follower_count,
+                                             ins_following_count=following_count,
+                                             ins_recent_12_meta=loads(recent_12),
+                                             ins_fullname=full_name,
+                                             ins_media_count=media_count,
+                                             ins_verified=is_verified,
+                                             ins_private=is_private,
+                                             ins_json=dictionary
+                                             )
+        return ins_tracking_obj
+    else:
+        return None
 
 
 def parse_ins_lambda_via_q(q):
     while not q.empty():
         ins_map_obj = q.get()
+        ins_tracking_obj = crawl_ins_username_via_lambda(ins_username=ins_map_obj.latest_username)
+        if ins_tracking_obj:
+            ins_tracking_obj.save()
+            ins_map_obj.latest_username = ins_tracking_obj.ins_username
+            ins_map_obj.latest_crawl_at = datetime.now()
+            ins_map_obj.latest_crawl_state = StateEnum.Parse_Success
+            ins_map_obj.latest_follower_count = ins_tracking_obj.ins_follower_count
+            ins_map_obj.save()
+            ins_tracking_obj.save()
+        else:
+            ins_map_obj.latest_crawl_at = datetime.now()
+            ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
+            ins_map_obj.save()
 
 
-def generate_ins_crawl_list(threads=10):
+def generate_ins_crawl_list(threads=30):
     """
     generate a list from Process Instagram to crawl, save result to Social Tracking
     :return:
