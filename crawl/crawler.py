@@ -1,27 +1,19 @@
-import threading
-import time
-from datetime import date, timedelta
 from json import loads, dumps
-from queue import Queue
-from threading import Thread
-from django.db.models import Q
-from django.db.models import Q
+
 import requests
 from django.utils import timezone
 
-from crawl.models import InstagramMap, InstagramTracking
+from crawl.models import InstagramTracking
 from crawl.models import StateEnum
 from settings.production import api_gateway
 
 
-def lambda_crawler_request(username=None, use_proxy=False, social_type=None):
+def lambda_crawler_request(username=None):
     try:
-        header = {'username': username,
-                  'social_type': social_type,
-                  'use_proxy': str(use_proxy),
-                  'x-api-key': api_gateway['CrawlerAPIKey-C'][0]}
+        header = {"username": username,
+                  "x-api-key": api_gateway["CrawlerAPIKey-C"][0]}
 
-        req = requests.request('GET', url=api_gateway['CrawlerAPIKey-C'][1], headers=header, timeout=15, verify=False)
+        req = requests.request('GET', url=api_gateway["CrawlerAPIKey-C"][1], headers=header, timeout=15, verify=False)
         if req.status_code == 200:
             return req.content
         else:
@@ -100,63 +92,8 @@ def crawl_ins_username_via_lambda(req_content=None, ins_map_obj=None):
         ins_map_obj.latest_crawl_state = StateEnum.Parse_Success
         ins_map_obj.latest_crawl_at = timezone.now()
         ins_map_obj.save()
-
-
-def parse_ins_lambda_via_q(q):
-    while not q.empty():
-
-        ins_map_obj = q.get()
-
-        # Request
-        req_content = lambda_crawler_request(username=ins_map_obj.latest_username, social_type="ins")
-        if req_content:
-            ins_map_obj.latest_crawl_state = StateEnum.Req_Success
-            ins_map_obj.save()
-
-            # Parse
-            try:
-                crawl_ins_username_via_lambda(req_content=req_content, ins_map_obj=ins_map_obj)
-            except:
-                ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
-                ins_map_obj.save()
-
-        else:
-            ins_map_obj.latest_crawl_state = StateEnum.Req_Failed
-            ins_map_obj.save()
-        time.sleep(0.5)
-
-
-def activate_ins_crawl(threads=20):
-    """
-    generate a list from Process Instagram to crawl, save result to Social Tracking
-    :return:
-    """
-
-    prior_week = date.today() - timedelta(7)
-    ins_to_crawl_list = [am for am in InstagramMap.objects.filter(
-        Q(latest_crawl_state__in=[StateEnum.Parse_Failed, StateEnum.Req_Failed, StateEnum.New, StateEnum.Standby]) |
-        Q(latest_crawl_state=StateEnum.Parse_Success, latest_crawl_at__gte=prior_week)
-    )]
-
-    q = Queue()
-    for i in ins_to_crawl_list:
-        q.put(i)
-
-    sys_threads = threading.active_count()
-    c = 0
-
-    while not q.empty():
-        try:
-            c += 1
-            tc = threading.active_count()
-            if tc < (threads + sys_threads):
-                print('Active Threads::' + str(tc))
-                worker = Thread(target=parse_ins_lambda_via_q, args=(q,))
-                worker.daemon = True
-                worker.start()
-                time.sleep(0.5)
-            else:
-                time.sleep(15)
-        except Exception as e:
-            print(e)
-
+        return "Success"
+    else:
+        print("Parse Failed No User Name or ID. Username: ",
+              str(ins_map_obj.latest_username), "; Reason: ", dictionary)
+        return None

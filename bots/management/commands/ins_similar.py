@@ -79,7 +79,7 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None):
                         driver.find_elements_by_xpath("//a[contains(@style,'width: 54px; height: 54px;')]")]
             for i in new_guys:
                 ins_username = i.split('/')[3]
-                isp_obj, created = InstagramMap.objects.get_or_create(latest_username=ins_username)
+                isp_obj, created = InstagramMap.objects.get_or_create(latest_username=str(ins_username).lower())
 
             try:
                 driver.find_elements_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]")[1].click()
@@ -88,6 +88,7 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None):
                 driver.find_element_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]").click()
                 time.sleep(random.uniform(3, 4))
         ins_map_obj.ins_find_similar = True
+        ins_map_obj.latest_similar_at = timezone.now()
         ins_map_obj.save()
         return driver
     except Exception as e:
@@ -141,14 +142,13 @@ class Command(BaseCommand):
 
         ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=3000,
                                                                     ins_find_similar=False
-                                                                    ).order_by('created_at')[:50]]
+                                                                    ).order_by('created_at')[:150]]
 
         # Login
         driver = ins_login(user_name='ranaoyang@outlook.com')  # a.wen.z
 
         for i in ins_people_list:
             driver = search_ins_people(driver=driver, ins_map_obj=i)
-            i.ins_find_similar = True
-            i.latest_similar_at = timezone.now()
-            i.save()
+
+        time.sleep(3)
         driver.close()
