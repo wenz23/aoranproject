@@ -94,6 +94,11 @@ def crawl_ins_username_via_lambda(req_content=None, ins_map_obj=None):
         ins_map_obj.save()
         return "Success"
     else:
-        print("Parse Failed No User Name or ID. Username: ",
-              str(ins_map_obj.latest_username), "; Reason: ", dictionary)
-        return None
+        if dictionary['status code'] == '404':
+            print("Parse Failed No User Name or ID. Username: 404:  ",
+                  str(ins_map_obj.latest_username), "; Reason: ", dictionary)
+            return "404"
+        else:
+            print("Parse Failed No User Name or ID. Username: ",
+                  str(ins_map_obj.latest_username), "; Reason: ", dictionary)
+            return "Other"

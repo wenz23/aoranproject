@@ -148,8 +148,11 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         start_time = time.time()
         ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=3000,
+                                                                    latest_follower_count__lte=200000,
                                                                     ins_find_similar=False
-                                                                    ).order_by('created_at')[:200]]
+                                                                    ).order_by('created_at')]
+        print("Starting Size: ", len(ins_people_list))
+        ins_people_list = ins_people_list[:200]
 
         # Login
         driver = ins_login(user_name='ranaoyang@outlook.com')  # a.wen.z

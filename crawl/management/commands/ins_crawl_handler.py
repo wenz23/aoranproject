@@ -17,7 +17,7 @@ def activate_ins_crawl():
     #     Q(latest_crawl_state__in=[StateEnum.Parse_Failed, StateEnum.Req_Failed, StateEnum.New, StateEnum.Standby, StateEnum.Req_Success]) |
     #     Q(latest_crawl_state=StateEnum.Parse_Success, latest_crawl_at__gte=prior_week))]
 
-    ins_to_crawl_list = [am for am in InstagramMap.objects.exclude(latest_crawl_state=600).order_by('-created_at')]
+    ins_to_crawl_list = [am for am in InstagramMap.objects.exclude(latest_crawl_state__in=[600, 404]).order_by('-created_at')]
 
     print("Start: ", len(ins_to_crawl_list))
     counter = 0
@@ -33,11 +33,17 @@ def activate_ins_crawl():
             # Parse
             try:
                 result = crawl_ins_username_via_lambda(req_content=req_content, ins_map_obj=ins_map_obj)
+
                 if not result:
                     ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
-                    ins_map_obj.save()
+                elif result == "404":
+                    ins_map_obj.latest_crawl_state = StateEnum.User_Not_Exist
+                else:
+                    ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
+                ins_map_obj.save()
+
             except Exception as e:
-                print("Parse Failed because: ", str(e))
+                print("Parse Failed. Username: ", str(ins_map_obj.latest_username), ". Because: ", str(e))
                 ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
                 ins_map_obj.save()
 
