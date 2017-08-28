@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*
-
-
 import time
 
 import random
@@ -99,19 +97,28 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None):
 
 def type_in_search_box(driver=None, type_input=None):
     if driver and type_input:
-        # time.sleep(random.uniform(2, 4))
-        # driver.execute_script("window.scrollTo(0," + str(random.randint(80, 140)) + ")")
+
+        # Click on Search Box
         time.sleep(random.uniform(3, 4))
         driver.find_element_by_xpath("//span[contains(@class,'coreSpriteSearchIcon')]").click()
+        time.sleep(random.uniform(2, 3))
+
+        # Clean Search Box
         input_box = driver.find_element_by_xpath("//input[contains(@placeholder, 'Search')]")
+        input_box.clear()
+
+        # Type in Search Box
         for i in type_input:
             time.sleep(random.uniform(0.4, 0.7))
             input_box.send_keys(i)
-        # Enter Twice
         time.sleep(random.uniform(2, 4))
-        input_box.send_keys(Keys.ENTER)
-        time.sleep(random.uniform(2, 4))
-        input_box.send_keys(Keys.ENTER)
+
+        # Select First Non-HashTag Element
+        search_results = driver.find_elements_by_xpath("//*[@id='react-root']/section/nav/div[2]/div/div/div[2]/div[2]/div[2]/div/a")
+        for each_result in search_results:
+            if "/tags/" not in each_result.get_attribute('href'):
+                each_result.click()
+                break
 
         time.sleep(random.uniform(5, 6))
         print('Search:', type_input)
@@ -139,16 +146,18 @@ class Command(BaseCommand):
     help = ''
 
     def handle(self, *args, **kwargs):
-
+        start_time = time.time()
         ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=3000,
                                                                     ins_find_similar=False
-                                                                    ).order_by('created_at')[:150]]
+                                                                    ).order_by('created_at')[:200]]
 
         # Login
         driver = ins_login(user_name='ranaoyang@outlook.com')  # a.wen.z
+        print("Login time: ", str(time.time() - start_time))
 
         for i in ins_people_list:
             driver = search_ins_people(driver=driver, ins_map_obj=i)
 
         time.sleep(3)
         driver.close()
+        print("Time spent: ", str(time.time() - start_time))
