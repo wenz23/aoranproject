@@ -1,5 +1,5 @@
-from json import loads
-
+from simplejson import loads
+import re
 import requests
 from django.core.management.base import BaseCommand
 
@@ -21,12 +21,23 @@ def request_func(url=None):
         return False, {"error": "request failed: request function try except", "url": url}
 
 
+def replace_with_byte(match):
+    return chr(int(match.group(0)[1:], 8))
+
+
+def repair(brokenjson):
+    invalid_escape = re.compile(r'\\[0-7]{1,3}')
+    return invalid_escape.sub(replace_with_byte, brokenjson)
+
+
 def parse_ins(req_content=None):
     try:
         html = req_content
         text = html[html.index(str("window._sharedData = ").encode("utf-8")) + 21:]
         text = (text[:text.index(str("};</script>").encode("utf-8"))] + str("}").encode("utf-8")).replace(
             str('\\"').encode("utf-8"), str("").encode("utf-8"))
+
+        # dictionary = loads(repair(text))
         dictionary = loads(text)
         return dictionary
     except Exception as e:
