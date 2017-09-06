@@ -38,7 +38,10 @@ def activate_ins_crawl():
                     ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
                 elif result == "404":
                     ins_map_obj.latest_crawl_state = StateEnum.User_Not_Exist
+                elif result == "Success":
+                    ins_map_obj.latest_crawl_state = StateEnum.Parse_Success
                 else:
+
                     ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
                 ins_map_obj.save()
 
