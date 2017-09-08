@@ -18,6 +18,8 @@ def activate_ins_crawl():
     #     Q(latest_crawl_state=StateEnum.Parse_Success, latest_crawl_at__gte=prior_week))]
 
     ins_to_crawl_list = [am for am in InstagramMap.objects.exclude(latest_crawl_state__in=[600, 404]).order_by('-created_at')]
+    # ins_to_crawl_list = [am for am in
+    #                      InstagramMap.objects.exclude(latest_crawl_state__in=[404]).order_by('-created_at')]
 
     print("Start: ", len(ins_to_crawl_list))
     counter = 0

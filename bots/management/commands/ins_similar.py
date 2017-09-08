@@ -152,7 +152,7 @@ class Command(BaseCommand):
                                                                     ins_find_similar=False
                                                                     ).order_by('created_at')]
         print("Starting Size: ", len(ins_people_list))
-        ins_people_list = ins_people_list[60:260]
+        ins_people_list = ins_people_list[60:280]
 
         # Login
         driver = ins_login(user_name='ranaoyang@outlook.com')  # a.wen.z
