@@ -22,6 +22,8 @@ class InstagramMap(models.Model):
     latest_username         = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_find_similar        = models.BooleanField(default=False, db_index=True)
     ins_tags                = JSONField(blank=True, null=True, db_index=True)
+    ins_growth              = JSONField(blank=True, null=True, db_index=True)
+    ins_growth_meta         = JSONField(blank=True, null=True)
 
 
 class InstagramTracking(models.Model):
