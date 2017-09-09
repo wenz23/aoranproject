@@ -70,7 +70,7 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None):
     try:
         time.sleep(random.uniform(4, 6))
         driver.find_element_by_xpath("//div[contains(@class,'coreSpriteDropdownArrowWhite')]").click()
-        time.sleep(random.uniform(3, 4))
+        time.sleep(random.uniform(1, 2))
         while counter < max_loop:
             counter += 1
             new_guys = [am.get_attribute('href') for am in
@@ -81,10 +81,10 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None):
 
             try:
                 driver.find_elements_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]")[1].click()
-                time.sleep(random.uniform(3, 4))
+                time.sleep(random.uniform(1, 2))
             except:
                 driver.find_element_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]").click()
-                time.sleep(random.uniform(3, 4))
+                time.sleep(random.uniform(1, 2))
         ins_map_obj.ins_find_similar = True
         ins_map_obj.latest_similar_at = timezone.now()
         ins_map_obj.save()
@@ -99,9 +99,9 @@ def type_in_search_box(driver=None, type_input=None):
     if driver and type_input:
 
         # Click on Search Box
-        time.sleep(random.uniform(3, 4))
-        driver.find_element_by_xpath("//span[contains(@class,'coreSpriteSearchIcon')]").click()
         time.sleep(random.uniform(2, 3))
+        driver.find_element_by_xpath("//span[contains(@class,'coreSpriteSearchIcon')]").click()
+        time.sleep(random.uniform(1, 2))
 
         # Clean Search Box
         input_box = driver.find_element_by_xpath("//input[contains(@placeholder, 'Search')]")
@@ -111,7 +111,7 @@ def type_in_search_box(driver=None, type_input=None):
         for i in type_input:
             time.sleep(random.uniform(0.4, 0.7))
             input_box.send_keys(i)
-        time.sleep(random.uniform(2, 4))
+        time.sleep(random.uniform(1, 2))
 
         # Select First Non-HashTag Element
         search_results = driver.find_elements_by_xpath("//*[@id='react-root']/section/nav/div[2]/div/div/div[2]/div[2]/div[2]/div/a")
