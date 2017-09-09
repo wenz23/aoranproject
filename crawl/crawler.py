@@ -2,7 +2,7 @@ from json import loads, dumps
 
 import requests
 from django.utils import timezone
-
+from datetime import datetime
 from crawl.models import InstagramTracking
 from crawl.models import StateEnum
 from settings.production import api_gateway
@@ -86,11 +86,40 @@ def crawl_ins_username_via_lambda(req_content=None, ins_map_obj=None):
                                              ins_username=username
                                              )
         ins_tracking_obj.save()
-        ins_map_obj.latest_username = ins_tracking_obj.ins_username
-        ins_map_obj.ins_id = ins_tracking_obj.ins_id
-        ins_map_obj.latest_follower_count = ins_tracking_obj.ins_follower_count
-        ins_map_obj.latest_crawl_state = StateEnum.Parse_Success
-        ins_map_obj.latest_crawl_at = timezone.now()
+
+        # Growth Meta
+        try:
+            if ins_map_obj.ins_growth_meta:
+                curr_dict = ins_map_obj.ins_growth_meta
+                curr_dict[datetime.now().isoformat()] = int(following_count)
+                ins_map_obj.ins_growth_meta = curr_dict
+            else:
+                ins_map_obj.ins_growth_meta = {datetime.now().isoformat(): int(following_count)}
+        except:
+            pass
+
+        # Growth Summary
+        try:
+            if ins_map_obj.ins_growth:
+                curr_dict           = ins_map_obj.ins_growth
+                start_d             = datetime.strptime(curr_dict['start']['d'], "%Y-%m-%dT%H:%M:%S.%f")
+                start_c             = curr_dict['start']['c']
+                end_d               = datetime.now()
+                end_c               = int(following_count)
+                curr_dict['end']    = {'d': end_d.isoformat(), 'c': end_c}
+                if (end_d - start_d).days > 0:
+                    curr_dict['rate']   = (end_c - start_c)/(end_d - start_d).days
+                ins_map_obj.ins_growth = curr_dict
+            else:
+                ins_map_obj.ins_growth = {'start': {'d': datetime.now().isoformat(), 'c': int(following_count)}}
+
+        except:
+            pass
+        ins_map_obj.latest_username         = ins_tracking_obj.ins_username
+        ins_map_obj.ins_id                  = ins_tracking_obj.ins_id
+        ins_map_obj.latest_follower_count   = ins_tracking_obj.ins_follower_count
+        ins_map_obj.latest_crawl_state      = StateEnum.Parse_Success
+        ins_map_obj.latest_crawl_at         = timezone.now()
         ins_map_obj.save()
         return "Success"
     else:
