@@ -2,7 +2,11 @@
 import requests
 from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand
+import phonenumbers
+from django.utils import timezone
+from gym.models import Gyms
 
+import usaddress
 
 def gym_homepage():
     home_url = "http://www.planetfitness.com/all-clubs"
@@ -34,13 +38,24 @@ def parse_individual_gym(each_url=None):
     except:
         store_name = None
     try:
-        street = each_soup.find("div", class_="views-field-field-club-street").text
+        address = each_soup.find("div", {"class": "gym-header"}).find("div", {"class": "address"}).text
+        try:
+            add_dict = usaddress.tag(address)
+            city = add_dict[0]["PlaceName"]
+            zipcode = add_dict[0]["ZipCode"]
+            state = add_dict[0]["StateName"]
+        except:
+            address = None
+            add_dict = None
+            city = None
+            zipcode = None
+            state = None
     except:
-        street = None
-    try:
-        city_n_zip = each_soup.find("div", class_="views-field-nothing").text
-    except:
-        city_n_zip = None
+        address = None
+        add_dict = None
+        city = None
+        zipcode = None
+        state = None
     try:
         phone = each_soup.find("div", class_="views-field-phone").find_all("span")[1].text
     except:
@@ -53,6 +68,29 @@ def parse_individual_gym(each_url=None):
         holiday_hours = each_soup.find("div", class_="views-field-field-holidays-compiled").text
     except:
         holiday_hours = None
+
+    try:
+        gym_obj, created = Gyms.objects.get_or_create(gym_url=each_url)
+
+        if not created:
+            gym_obj.revisited_at = timezone.now()
+        gym_obj.street_address = address
+        gym_obj.city = city
+        gym_obj.state = state
+        gym_obj.zip_code = zipcode
+        gym_obj.hours = hours
+        gym_obj.holiday = holiday_hours
+        gym_obj.gym_url = each_url
+        gym_obj.phone = phone
+        gym_obj.gym_name = store_name
+        gym_obj.save()
+
+    except Exception as e:
+        print(e)
+
+
+
+
     print("Done")
 
 

@@ -8,11 +8,12 @@ class Gyms(models.Model):
     gym_name                = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     street_address          = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     city                    = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    state                   = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     zip_code                = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     hours                   = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     holiday                 = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     phone                   = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    gym_url = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    employment = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    gym_url                 = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    employment              = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
 
 
