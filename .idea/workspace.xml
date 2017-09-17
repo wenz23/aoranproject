@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e021d1a8-d963-4cbe-b4ac-4c8f00bef386" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gym/management/commands/gym_crawler.py" afterPath="$PROJECT_DIR$/gym/management/commands/gym_crawler.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/website/templates/gym_list.html" afterPath="$PROJECT_DIR$/website/templates/gym_list.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -90,8 +88,8 @@
       <file leaf-file-name="gym_list.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/website/templates/gym_list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="564">
-              <caret line="55" column="79" lean-forward="false" selection-start-line="55" selection-start-column="79" selection-end-line="55" selection-end-column="79" />
+            <state relative-caret-position="535">
+              <caret line="55" column="121" lean-forward="false" selection-start-line="55" selection-start-column="121" selection-end-line="55" selection-end-column="121" />
               <folding />
             </state>
           </provider>
@@ -1104,8 +1102,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/website/templates/gym_list.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="564">
-          <caret line="55" column="79" lean-forward="false" selection-start-line="55" selection-start-column="79" selection-end-line="55" selection-end-column="79" />
+        <state relative-caret-position="535">
+          <caret line="55" column="121" lean-forward="false" selection-start-line="55" selection-start-column="121" selection-end-line="55" selection-end-column="121" />
           <folding />
         </state>
       </provider>
