@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*
 import requests
+import usaddress
 from bs4 import BeautifulSoup
 from django.core.management.base import BaseCommand
-import phonenumbers
 from django.utils import timezone
+
 from gym.models import Gyms
 
-import usaddress
 
 def gym_homepage():
     home_url = "http://www.planetfitness.com/all-clubs"
@@ -23,16 +23,24 @@ def gym_homepage():
     return gym_urls
 
 
-
 def parse_individual_gym(each_url=None):
+    """Request"""
+
+    # Adding headers during requests decrease the possibility of being banned by website
+    # since the website may consider it's a bot.
     headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) Version/10.1.2 Safari/603.3.8",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/603.3.8 (KHTML, like Gecko) "
+                      "Version/10.1.2 Safari/603.3.8",
         "Accept-Language": "en"
     }
+
+    # there are several urls need redirect, but it's an infinite loop, maybe some flaws from their website development.
+    # adding timeout will increase the efficiency during the crawl
     each_req = requests.get(url=each_url, headers=headers, timeout=8, allow_redirects=False)
     each_soup = BeautifulSoup(each_req.content, "html.parser")
 
-    # parse
+    """Parsing"""
+    # Parsing
     try:
         store_name = each_soup.find("h1", {"class": "title"}).text
     except:
@@ -69,6 +77,7 @@ def parse_individual_gym(each_url=None):
     except:
         holiday_hours = None
 
+    """Save to Django ORM """
     try:
         gym_obj, created = Gyms.objects.get_or_create(gym_url=each_url)
 
@@ -87,12 +96,6 @@ def parse_individual_gym(each_url=None):
 
     except Exception as e:
         print(e)
-
-
-
-
-    print("Done")
-
 
 
 class Command(BaseCommand):
