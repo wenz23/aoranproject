@@ -95,7 +95,8 @@ def crawl_ins_username_via_lambda(req_content=None, ins_map_obj=None):
                 ins_map_obj.ins_growth_meta = curr_dict
             else:
                 ins_map_obj.ins_growth_meta = {datetime.now().isoformat(): int(following_count)}
-        except:
+        except Exception as e:
+            print(e)
             pass
 
         # Growth Summary
@@ -113,7 +114,8 @@ def crawl_ins_username_via_lambda(req_content=None, ins_map_obj=None):
             else:
                 ins_map_obj.ins_growth = {'start': {'d': datetime.now().isoformat(), 'c': int(following_count)}}
 
-        except:
+        except Exception as e:
+            print(e)
             pass
         ins_map_obj.latest_username         = ins_tracking_obj.ins_username
         ins_map_obj.ins_id                  = ins_tracking_obj.ins_id

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crawl',
     'bots',
     'website',
+    'gym'
 ]
 
 MIDDLEWARE = [
