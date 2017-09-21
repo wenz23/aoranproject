@@ -15,8 +15,7 @@ DATABASES = {
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'qgd(kc82*#anz6cyz*jg30wx+cdtav51dtoe5*a(30pqkg@%g*'
 
-
-ins_tags = {'a.wen.z': ['instafood', 'food', 'foodnetwork', 'delicious', 'foodie', 'yummy', 'cooking',  'breakfast',
+ins_tags = {'a.wen.z': ['instafood', 'food', 'foodnetwork', 'delicious', 'foodie', 'yummy', 'cooking', 'breakfast',
                         'foodphotography', 'Chefmode', 'foodbloger', 'homechef', 'homecooking', 'foodlover',
                         'seattle', 'eater', 'foodgasm', 'foodporn', 'thekitch', 'hungry', 'dinner', 'lunch',
                         'asianfood', 'chinesefood', 'japanesefood', 'thaifood', 'koreanfood', 'souplover',
@@ -34,19 +33,27 @@ ins_comments = {'a.wen.z': ['❤️', 'Love the shot!', 'Nice shot!', 'Great sho
                             'Love this one!', 'Nice shot', 'Prefect', 'Wonderful', 'Beautiful', 'Splendida!',
                             ]}
 
-
 ins_passwords = {'a.wen.z': 'wenzhangwen',
                  'ranaoyang': 'Yar1991627--',
                  'ranaoyang@outlook.com': '1991627yar'
                  }
 
-api_gateway = {
-    "CrawlerAPIKey-P": ["25yv6Zxmyo4n7ogCLOn6E3WX71FBy16Q97IvrO5y",
-                        "https://8v0n6wy852.execute-api.us-west-1.amazonaws.com/prod/crawlerFunction"],
-    "CrawlerAPIKey-C": ["zWZq46glFJaEqbPUcNskf4Og84y3DeVk72YIPA6G",
-                        "https://ltmjmfb4lc.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction"],
-}
-
+api_gateway = {"CrawlerAPIKey-P": ["25yv6Zxmyo4n7ogCLOn6E3WX71FBy16Q97IvrO5y",
+                                   "https://8v0n6wy852.execute-api.us-west-1.amazonaws.com/prod/crawlerFunction"],
+               "CrawlerAPIKey-C": ["zWZq46glFJaEqbPUcNskf4Og84y3DeVk72YIPA6G",
+                                   ["https://ltmjmfb4lc.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction",
+                                    "https://km69rno326.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction",
+                                    "https://klzk6dw80a.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction",
+                                    "https://e5qo8xtjg6.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction",
+                                    "https://ebgz23oq6h.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction",
+                                    "https://zj00ie1j0f.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction",
+                                    "https://3ecpzbkx08.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction",
+                                    "https://v1pujqntkc.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction",
+                                    "https://dfurk9j8ze.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction",
+                                    "https://yghub2nd95.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction"
+                                    ]
+                                   ],
+               }
 
 ins_xpath = {'login_in_username': "//*[@id='react-root']/section/main/article/header/div[2]/div[1]/h1",
              'search_box': "//span[contains(@class,'coreSpriteSearchIcon')]",

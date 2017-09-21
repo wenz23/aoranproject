@@ -1,25 +1,55 @@
+import threading
+import time
+from datetime import datetime
 from json import loads, dumps
+import random
+import random
 
 import requests
 from django.utils import timezone
-from datetime import datetime
+
 from crawl.models import InstagramTracking
 from crawl.models import StateEnum
 from settings.production import api_gateway
 
 
 def lambda_crawler_request(username=None):
+
     try:
         header = {"username": username,
                   "x-api-key": api_gateway["CrawlerAPIKey-C"][0]}
 
-        req = requests.request('GET', url=api_gateway["CrawlerAPIKey-C"][1], headers=header, timeout=15, verify=False)
+        req = requests.request('GET',
+                               url=random.choice(api_gateway["CrawlerAPIKey-C"][1]),
+                               headers=header,
+                               timeout=15,
+                               verify=False)
         if req.status_code == 200:
             return req.content
         else:
             return None
     except:
         return None
+
+
+def thread_wrapper_for_q(thread_count=1, c_function=None, q=None, lock_main_thread=True, wait_time=15):
+    worker = None
+    if c_function and q:
+        print("====================")
+        print("Qsize count:")
+        print(q.qsize())
+        print("====================")
+        for i in range(thread_count):
+            if not q.empty():
+                worker = threading.Thread(target=c_function, args=(q,))
+                worker.daemon = False
+                time.sleep(wait_time)
+                worker.start()
+                time.sleep(0.1)
+            else:
+                return True
+        if lock_main_thread and worker:
+            worker.join()
 
 
 def crawl_ins_username_via_lambda(req_content=None, ins_map_obj=None):

@@ -16,6 +16,7 @@ def activate_ins_crawl():
                          .objects.exclude(latest_crawl_state__in=[404])
                          .filter(latest_crawl_at__lt=prior_week)
                          .order_by('-created_at')]
+
     ins_to_crawl_list_2 = [am for am in InstagramMap.objects.filter(latest_crawl_at__isnull=True).order_by('created_at')]
     ins_to_crawl_list = list(set(ins_to_crawl_list_1 + ins_to_crawl_list_2))
 
