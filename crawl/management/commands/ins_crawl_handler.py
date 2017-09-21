@@ -22,7 +22,7 @@ def activate_ins_crawl():
     print("Start: ", len(ins_to_crawl_list))
     counter = 0
     for ins_map_obj in ins_to_crawl_list:
-        time.sleep(0.5)
+        time.sleep(0.6)
         counter += 1
         if counter % 100 == 0:
             print(len(ins_to_crawl_list) - counter, " TO GO")

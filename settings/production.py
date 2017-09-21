@@ -44,12 +44,11 @@ api_gateway = {
     "CrawlerAPIKey-P": ["25yv6Zxmyo4n7ogCLOn6E3WX71FBy16Q97IvrO5y",
                         "https://8v0n6wy852.execute-api.us-west-1.amazonaws.com/prod/crawlerFunction"],
     "CrawlerAPIKey-C": ["zWZq46glFJaEqbPUcNskf4Og84y3DeVk72YIPA6G",
-                        "https://ltmjmfb4lc.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction"]
-               }
+                        "https://ltmjmfb4lc.execute-api.us-west-1.amazonaws.com/prod/aoranlambdafunction"],
+}
 
 
 ins_xpath = {'login_in_username': "//*[@id='react-root']/section/main/article/header/div[2]/div[1]/h1",
              'search_box': "//span[contains(@class,'coreSpriteSearchIcon')]",
              'search_box_input': "//input[contains(@placeholder, 'Search')]",
-
              }

@@ -6,7 +6,6 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
 
 from crawl.models import InstagramMap
 from settings.production import ins_passwords
