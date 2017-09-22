@@ -33,9 +33,10 @@ ins_comments = {'a.wen.z': ['❤️', 'Love the shot!', 'Nice shot!', 'Great sho
                             'Love this one!', 'Nice shot', 'Prefect', 'Wonderful', 'Beautiful', 'Splendida!',
                             ]}
 
-ins_passwords = {'a.wen.z': 'wenzhangwen',
-                 'ranaoyang': 'Yar1991627--',
-                 'ranaoyang@outlook.com': '1991627yar'
+ins_passwords = {'a.wen.z':                 'wenzhangwen',
+                 'ranaoyang':               'Yar1991627--',
+                 'ranaoyang@outlook.com':   '1991627yar',
+                 'ranaoyang@icloud.com':    '1991627yar',
                  }
 
 api_gateway = {"CrawlerAPIKey-P": ["25yv6Zxmyo4n7ogCLOn6E3WX71FBy16Q97IvrO5y",

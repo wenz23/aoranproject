@@ -80,10 +80,10 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None):
 
             try:
                 driver.find_elements_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]")[1].click()
-                time.sleep(random.uniform(0.5, 1))
+                time.sleep(random.uniform(1.5, 2))
             except:
                 driver.find_element_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]").click()
-                time.sleep(random.uniform(0.5, 1))
+                time.sleep(random.uniform(1.5, 2))
         ins_map_obj.ins_find_similar = True
         ins_map_obj.latest_similar_at = timezone.now()
         ins_map_obj.save()
@@ -144,17 +144,22 @@ def search_ins_people(driver=None, ins_map_obj=None):
 class Command(BaseCommand):
     help = ''
 
-    def handle(self, *args, **kwargs):
+    def add_arguments(self, parser):
+        parser.add_argument('login_account', type=str)
+
+    def handle(self, *args, **options):
+        login_account = options['login_account']
+
         start_time = time.time()
         ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=10000,
                                                                     latest_follower_count__lte=300000,
                                                                     ins_find_similar=False
                                                                     ).order_by('created_at')]
         print("Starting Size: ", len(ins_people_list))
-        ins_people_list = ins_people_list[100:330]
+        ins_people_list = ins_people_list[140:380]
 
         # Login
-        driver = ins_login(user_name='ranaoyang@outlook.com')  # a.wen.z
+        driver = ins_login(user_name=login_account)  # a.wen.z
         print("Login time: ", str(time.time() - start_time))
 
         for i in ins_people_list:
