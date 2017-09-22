@@ -145,21 +145,29 @@ class Command(BaseCommand):
     help = ''
 
     def add_arguments(self, parser):
-        parser.add_argument('login_account', type=str)
+
+        parser.add_argument('--login_account', nargs='+')
+        parser.add_argument('--order', nargs='+', type=int)
 
     def handle(self, *args, **options):
-        login_account = options['login_account']
+        login_account = options['login_account'][0]
+        order = options['order'][0]
+
+        order_string = 'created_at' if order == 0 else '-created_at'
 
         start_time = time.time()
         ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=10000,
                                                                     latest_follower_count__lte=300000,
                                                                     ins_find_similar=False
-                                                                    ).order_by('created_at')]
+                                                                    ).order_by(order_string)]
         print("Starting Size: ", len(ins_people_list))
-        ins_people_list = ins_people_list[140:380]
+
+        skip_first = 140
+
+        ins_people_list = ins_people_list[skip_first:skip_first+260]
 
         # Login
-        driver = ins_login(user_name=login_account)  # a.wen.z
+        driver = ins_login(user_name=login_account)
         print("Login time: ", str(time.time() - start_time))
 
         for i in ins_people_list:
