@@ -15,9 +15,9 @@ urllib3.disable_warnings()
 def build_a_queue():
     q = Queue()
 
-    week = timezone.now() - timezone.timedelta(days=7)
+    week = timezone.now() - timezone.timedelta(days=5)
 
-    list_1 = [i for i in InstagramMap.objects.exclude(latest_crawl_state__in=[404])[:300]]
+    list_1 = [i for i in InstagramMap.objects.exclude(latest_crawl_state__in=[404]).filter(latest_crawl_at__lt=week)]
     list_2 = [i for i in InstagramMap.objects.filter(latest_crawl_at__isnull=True)]
 
     ins_to_crawl_list = list(set(list_1 + list_2))
@@ -67,4 +67,4 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         queue = build_a_queue()
 
-        thread_wrapper_for_q(thread_count=5, c_function=lambda_crawler_request_wrapper, q=queue, wait_time=15)
+        thread_wrapper_for_q(thread_count=4, c_function=lambda_crawler_request_wrapper, q=queue, wait_time=12)

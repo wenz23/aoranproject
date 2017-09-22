@@ -20,7 +20,7 @@ def lambda_crawler_request(username=None):
                   "x-api-key": api_gateway["CrawlerAPIKey-C"][0]}
 
         req = requests.request('GET',
-                               url=random.choice(api_gateway["CrawlerAPIKey-C"][1]),
+                               url=random.choice([api_gateway["CrawlerAPIKey-P"][1], api_gateway["CrawlerAPIKey-C"][1][0]]),
                                headers=header,
                                timeout=15,
                                verify=False)
@@ -32,7 +32,7 @@ def lambda_crawler_request(username=None):
         return None
 
 
-def thread_wrapper_for_q(thread_count=1, c_function=None, q=None, lock_main_thread=True, wait_time=15):
+def thread_wrapper_for_q(thread_count=1, c_function=None, q=None, lock_main_thread=True, wait_time=5):
     worker = None
     if c_function and q:
         print("====================")

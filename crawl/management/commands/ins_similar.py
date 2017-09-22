@@ -80,10 +80,10 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None):
 
             try:
                 driver.find_elements_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]")[1].click()
-                time.sleep(random.uniform(1, 2))
+                time.sleep(random.uniform(0.5, 1))
             except:
                 driver.find_element_by_xpath("//div[contains(@class,'coreSpritePagingChevron')]").click()
-                time.sleep(random.uniform(1, 2))
+                time.sleep(random.uniform(0.5, 1))
         ins_map_obj.ins_find_similar = True
         ins_map_obj.latest_similar_at = timezone.now()
         ins_map_obj.save()
