@@ -67,4 +67,4 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         queue = build_a_queue()
 
-        thread_wrapper_for_q(thread_count=4, c_function=lambda_crawler_request_wrapper, q=queue, wait_time=12)
+        thread_wrapper_for_q(thread_count=4, c_function=lambda_crawler_request_wrapper, q=queue, wait_time=15)
