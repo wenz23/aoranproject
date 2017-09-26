@@ -6,7 +6,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-
+from settings.base import BASE_DIR
 from crawl.models import InstagramMap
 from settings.production import ins_passwords
 
@@ -17,7 +17,7 @@ def ins_login(user_name=None):
         opts.add_argument("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 "
                           "(KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36")
         opts.add_argument("window-size=1500,800")
-        driver = webdriver.Chrome('/usr/local/bin/chromedriver', chrome_options=opts)
+        driver = webdriver.Chrome(BASE_DIR + '/aws/chromedriver', chrome_options=opts)
 
         # Login
         driver.get("https://www.instagram.com/")

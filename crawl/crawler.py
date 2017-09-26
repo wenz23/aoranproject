@@ -13,17 +13,19 @@ from crawl.models import StateEnum
 from settings.production import api_gateway
 
 
-def lambda_crawler_request(username=None):
+def lambda_crawler_request(username=None, api="C"):
 
     try:
+        if api == "C":
+            api_key = api_gateway["CrawlerAPIKey-C"][0]
+            api_url = api_gateway["CrawlerAPIKey-C"][1]
+        else:
+            api_key = api_gateway["CrawlerAPIKey-P"][0]
+            api_url = api_gateway["CrawlerAPIKey-P"][1]
         header = {"username": username,
-                  "x-api-key": api_gateway["CrawlerAPIKey-C"][0]}
+                  "x-api-key": api_key}
 
-        req = requests.request('GET',
-                               url=random.choice([api_gateway["CrawlerAPIKey-P"][1], api_gateway["CrawlerAPIKey-C"][1][0]]),
-                               headers=header,
-                               timeout=15,
-                               verify=False)
+        req = requests.request('GET', url=api_url, headers=header, timeout=15, verify=False)
         if req.status_code == 200:
             return req.content
         else:
