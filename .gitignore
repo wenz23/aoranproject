@@ -2,7 +2,6 @@
 __pycache__/
 *.pyc
 .idea/
-/settings/local.py
 /settings/production.py
 /logs/*.log
 *.DS_Store
