@@ -13,7 +13,7 @@ from crawl.models import StateEnum
 from settings.production import api_gateway
 
 
-def lambda_crawler_request(username=None, api="C"):
+def lambda_crawler_request(username=None):
 
     try:
         if api == "C":

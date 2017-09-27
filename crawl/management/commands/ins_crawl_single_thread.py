@@ -9,7 +9,7 @@ from crawl.models import InstagramMap
 urllib3.disable_warnings()
 
 
-def activate_ins_crawl(api="C"):
+def activate_ins_crawl():
     prior_week = timezone.now() - timezone.timedelta(days=5)
 
     ins_to_crawl_list_1 = [am for am in InstagramMap
@@ -19,10 +19,6 @@ def activate_ins_crawl(api="C"):
 
     ins_to_crawl_list_2 = [am for am in InstagramMap.objects.filter(latest_crawl_at__isnull=True).order_by('created_at')]
     ins_to_crawl_list = list(set(ins_to_crawl_list_1 + ins_to_crawl_list_2))
-    if api == "C":
-        ins_to_crawl_list = ins_to_crawl_list[:len(ins_to_crawl_list) / 2]
-    else:
-        ins_to_crawl_list = ins_to_crawl_list[len(ins_to_crawl_list) / 2:]
 
     print("Start: ", len(ins_to_crawl_list))
     counter = 0
@@ -31,7 +27,7 @@ def activate_ins_crawl(api="C"):
         counter += 1
         if counter % 100 == 0:
             print(len(ins_to_crawl_list) - counter, " TO GO")
-        req_content = lambda_crawler_request(username=ins_map_obj.latest_username, api=api)
+        req_content = lambda_crawler_request(username=ins_map_obj.latest_username)
         if req_content:
             ins_map_obj.latest_crawl_state = StateEnum.Req_Success
             ins_map_obj.save()
@@ -61,10 +57,7 @@ def activate_ins_crawl(api="C"):
 
 
 class Command(BaseCommand):
-    def add_arguments(self, parser):
-
-        parser.add_argument("--api", nargs='+')
 
     def handle(self, *args, **options):
-        api = options["api"][0]
-        activate_ins_crawl(api=api)
+
+        activate_ins_crawl()
