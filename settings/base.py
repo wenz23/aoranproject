@@ -161,3 +161,12 @@ LOGGING = {
         },
     }
 }
+
+try:
+    from .production import *
+    if os.getenv('PLATFORM') == 'aws':
+        from .aws import *
+    else:
+        from .local import *
+except ImportError as e:
+    print(e)
