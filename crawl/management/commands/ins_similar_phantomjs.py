@@ -11,6 +11,7 @@ from settings.production import ins_passwords
 
 
 def ins_login(user_name=None):
+    login_start_time = time.time()
     try:
         headers = {'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
                    'accept-encoding': 'gzip, deflate, br',
@@ -63,6 +64,7 @@ def ins_login(user_name=None):
         except:
             pass
         driver.save_screenshot('PhantomJS/5-homepage.png')
+        print("Login time: ", str(time.time() - login_start_time))
 
         return driver
     except Exception as e:
@@ -162,37 +164,35 @@ def search_ins_people(driver=None, ins_map_obj=None):
         return driver
 
 
+def get_list(order=None, skip=150, queue_length=240):
+    ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=10000,
+                                                                latest_follower_count__lte=400000,
+                                                                ins_find_similar=False
+                                                                ).order_by('created_at')]
+    print("Starting Size: ", len(ins_people_list))
+
+    ins_people_list = ins_people_list[skip + queue_length * order:skip + queue_length * order + queue_length]
+
+    return ins_people_list
+
+
 class Command(BaseCommand):
     help = ''
 
     def add_arguments(self, parser):
 
-        parser.add_argument('--login_account', nargs='+')
-        parser.add_argument('--order', nargs='+', type=int)
+        parser.add_argument('--usr', nargs='+')
 
     def handle(self, *args, **options):
-        login_account = options['login_account'][0]
-        order = options['order'][0]
 
-        start_time = time.time()
-        ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=10000,
-                                                                    latest_follower_count__lte=400000,
-                                                                    ins_find_similar=False
-                                                                    ).order_by('created_at')]
-        print("Starting Size: ", len(ins_people_list))
-
-        skip_first = 150
-        queue_length = 240
-
-        ins_people_list = ins_people_list[skip_first + queue_length * order:skip_first + queue_length * order + 240]
+        usr, order, st = ins_passwords[options['usr'][0]][0], ins_passwords[options['usr'][0]][1], time.time()
+        i_list = get_list(order=order)
 
         # Login
-        driver = ins_login(user_name=login_account)
-        print("Login time: ", str(time.time() - start_time))
+        driver = ins_login(user_name=usr)
 
-        for i in ins_people_list:
+        for i in i_list:
             driver = search_ins_people(driver=driver, ins_map_obj=i)
 
-        time.sleep(3)
         driver.close()
-        print("Time spent: ", str(time.time() - start_time))
+        print("Time spent: ", str(time.time() - st))
