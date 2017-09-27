@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*
 import random
 import time
-
+from settings.local import BASE_DIR, phantom_js_driver_path
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from selenium import webdriver
@@ -21,7 +21,7 @@ def ins_login(user_name=None):
                                  '(KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
                    }
 
-        driver = webdriver.PhantomJS()
+        driver = webdriver.PhantomJS(phantom_js_driver_path)
 
         for key, value in enumerate(headers):
             capability_key = 'phantomjs.page.customHeaders.{}'.format(key)
@@ -32,7 +32,7 @@ def ins_login(user_name=None):
         # Login
         driver.get("https://www.instagram.com/")
         time.sleep(random.uniform(5, 7))
-        driver.save_screenshot('PhantomJS/1-login-page.png')
+        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/1-login-page.png')
         driver.find_element_by_xpath("//*[@id='react-root']/section/main/article/div[2]/div[2]/p/a").click()
         time.sleep(random.uniform(3, 5))
 
@@ -42,28 +42,28 @@ def ins_login(user_name=None):
         for i in user_name:
             username.send_keys(i)
             time.sleep(random.uniform(0.2, 0.6))
-        driver.save_screenshot('PhantomJS/2-type-username.png')
+        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/2-type-username.png')
         # Password
         driver.find_element_by_xpath("//INPUT[@name='password']").click()
         time.sleep(random.uniform(2, 3))
         password = driver.find_element_by_xpath("//INPUT[@name='password']")
-        for i in ins_passwords[user_name]:
+        for i in ins_passwords[user_name][0]:
             password.send_keys(i)
             time.sleep(random.uniform(0.2, 0.6))
         time.sleep(random.uniform(2, 3))
-        driver.save_screenshot('PhantomJS/3-type-password.png')
+        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/3-type-password.png')
 
         # Click Login
         driver.find_element_by_xpath("//*[@id='react-root']/section/main/article/div[2]/div[1]/div/form/span/button").click()
         time.sleep(random.uniform(7, 9))
-        driver.save_screenshot('PhantomJS/4-logged-in.png')
+        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/4-logged-in.png')
 
         try:
             driver.find_element_by_xpath("/html/body/div[1]/div/div[2]/div/div/button").click()
             time.sleep(random.uniform(2, 3))
         except:
             pass
-        driver.save_screenshot('PhantomJS/5-homepage.png')
+        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/5-homepage.png')
         print("Login time: ", str(time.time() - login_start_time))
 
         return driver
@@ -145,7 +145,7 @@ def search_ins_people(driver=None, ins_map_obj=None):
         try:
             driver = type_in_search_box(driver=driver, type_input=ins_map_obj.latest_username)
             try:
-                driver.save_screenshot('PhantomJS/search_'+ins_map_obj.latest_username+'.png')
+                driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/search_'+ins_map_obj.latest_username+'.png')
             except:
                 print('Cannot save search png')
         except:
@@ -154,7 +154,7 @@ def search_ins_people(driver=None, ins_map_obj=None):
         try:
             driver = loop_similar_people(driver=driver, ins_map_obj=ins_map_obj)
             try:
-                driver.save_screenshot('PhantomJS/loop_'+ins_map_obj.latest_username+'.png')
+                driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/loop_'+ins_map_obj.latest_username+'.png')
             except:
                 print('Cannot save loop png')
         except:
@@ -185,7 +185,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        usr, order, st = ins_passwords[options['usr'][0]][0], ins_passwords[options['usr'][0]][1], time.time()
+        usr, order, st = options['usr'][0], ins_passwords[options['usr'][0]][1], time.time()
         i_list = get_list(order=order)
 
         # Login
