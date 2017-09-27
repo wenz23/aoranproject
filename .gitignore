@@ -1,4 +1,5 @@
 # General
+ghostdriver.log
 __pycache__/
 *.pyc
 .idea/
