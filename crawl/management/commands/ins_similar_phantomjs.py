@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*
 import random
 import time
-from settings.local import BASE_DIR, phantom_js_driver_path
+from settings.base import BASE_DIR, phantom_js_driver_path, ins_passwords
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from selenium import webdriver
 
 from crawl.models import InstagramMap
-from settings.production import ins_passwords
 
 
 def ins_login(user_name=None):

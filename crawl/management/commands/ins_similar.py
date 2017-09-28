@@ -6,9 +6,8 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from settings.base import BASE_DIR
+from settings.base import BASE_DIR, ins_passwords
 from crawl.models import InstagramMap
-from settings.production import ins_passwords
 
 
 def ins_login(user_name=None):
