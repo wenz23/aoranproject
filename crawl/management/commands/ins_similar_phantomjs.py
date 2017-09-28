@@ -19,7 +19,7 @@ def ins_login(user_name=None):
                    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 '
                                  '(KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
                    }
-
+        print('Driver Location', phantom_js_driver_path)
         driver = webdriver.PhantomJS(executable_path=phantom_js_driver_path,
                                      service_log_path=BASE_DIR + '/phantom_js_screenshots/ghostdriver.log')
 
