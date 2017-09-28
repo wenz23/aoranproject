@@ -24,7 +24,7 @@ def ins_login(user_name=None):
                                  '(KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36'
                    }
         driver = webdriver.PhantomJS(executable_path=phantom_js_driver_path,
-                                     service_log_path=BASE_DIR + '/phantom_js_screenshots/ghostdriver.log')
+                                     service_log_path=BASE_DIR + '/logs/ghostdriver.log')
 
         for key, value in enumerate(headers):
             capability_key = 'phantomjs.page.customHeaders.{}'.format(key)
