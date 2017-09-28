@@ -1,1 +1,1 @@
-phantom_js_driver_path = '/usr/bin/phantomjs'
+phantom_js_driver_path = '/usr/local/bin/phantomjs'
