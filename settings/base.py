@@ -133,7 +133,15 @@ LOGGING = {
         'logfile': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': SITE_ROOT + "/../logs/django.log",
+            'filename': BASE_DIR + "/logs/django.log",
+            'maxBytes': 50000,
+            'backupCount': 2,
+            'formatter': 'standard',
+        },
+        'phantomjs_logfile': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': BASE_DIR + "/logs/phantomjs_crawler.log",
             'maxBytes': 50000,
             'backupCount': 2,
             'formatter': 'standard',
@@ -155,8 +163,8 @@ LOGGING = {
             'level': 'DEBUG',
             'propagate': False,
         },
-        'scraper': {
-            'handlers': ['console', 'logfile'],
+        'phantomjs_crawler': {
+            'handlers': ['console', 'phantomjs_logfile'],
             'level': 'DEBUG',
         },
     }
