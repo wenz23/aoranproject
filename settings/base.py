@@ -132,7 +132,7 @@ LOGGING = {
         },
         'logfile': {
             'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
+            'class': 'logging.FileHandler',  # logging.handlers.RotatingFileHandler
             'filename': BASE_DIR + "/logs/django.log",
             'maxBytes': 50000,
             'backupCount': 2,
@@ -140,10 +140,10 @@ LOGGING = {
         },
         'phantomjs_logfile': {
             'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
+            'class': 'logging.FileHandler',  # logging.handlers.RotatingFileHandler
             'filename': BASE_DIR + "/logs/phantomjs_crawler.log",
-            # 'maxBytes': 50000,
-            # 'backupCount': 2,
+            'maxBytes': 50000,
+            'backupCount': 2,
             'formatter': 'standard',
         },
         'console': {
