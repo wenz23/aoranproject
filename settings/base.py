@@ -142,8 +142,8 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
             'filename': BASE_DIR + "/logs/phantomjs_crawler.log",
-            'maxBytes': 50000,
-            'backupCount': 2,
+            # 'maxBytes': 50000,
+            # 'backupCount': 2,
             'formatter': 'standard',
         },
         'console': {
