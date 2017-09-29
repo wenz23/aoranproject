@@ -134,7 +134,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',  # logging.handlers.RotatingFileHandler
             'filename': BASE_DIR + "/logs/django.log",
-            'maxBytes': 50000,
+            # 'maxBytes': 50000,
             # 'backupCount': 2,
             'formatter': 'standard',
         },
@@ -142,7 +142,7 @@ LOGGING = {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',  # logging.handlers.RotatingFileHandler
             'filename': BASE_DIR + "/logs/phantomjs_crawler.log",
-            'maxBytes': 50000,
+            # 'maxBytes': 50000,
             # 'backupCount': 2,
             'formatter': 'standard',
         },
