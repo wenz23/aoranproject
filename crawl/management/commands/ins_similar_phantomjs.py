@@ -79,6 +79,7 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None, user_name=Non
         time.sleep(random.uniform(5, 6))
         driver.find_element_by_xpath("//div[contains(@class,'coreSpriteDropdownArrowWhite')]").click()
         time.sleep(random.uniform(1, 2))
+
         while loop_counter < max_loop:
             loop_counter += 1
             new_guys = [am.get_attribute('href') for am in
@@ -86,6 +87,11 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None, user_name=Non
             for i in new_guys:
                 ins_username = i.split('/')[3]
                 isp_obj, created = InstagramMap.objects.get_or_create(latest_username=str(ins_username).lower())
+
+                if ins_map_obj.project_info:
+                    isp_obj.project_info = {**isp_obj.project_info, **ins_map_obj.project_info}
+                    isp_obj.save()
+
                 if created:
                     new_similar_counter += 1
                 else:

@@ -21,10 +21,10 @@ class InstagramMap(models.Model):
     latest_follower_count   = models.PositiveIntegerField(blank=True, null=True, db_index=True)
     latest_username         = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_find_similar        = models.BooleanField(default=False, db_index=True)
-    ins_tags                = JSONField(blank=True, null=True, db_index=True)
-    ins_growth              = JSONField(blank=True, null=True, db_index=True)
-    ins_growth_meta         = JSONField(blank=True, null=True)
-    project_info            = JSONField(blank=True, null=True)
+    ins_tags                = JSONField(default=dict, blank=True, null=True, db_index=True)
+    ins_growth              = JSONField(default=dict, blank=True, null=True, db_index=True)
+    ins_growth_meta         = JSONField(default=dict, blank=True, null=True)
+    project_info            = JSONField(default=dict, blank=True, null=True)
 
 
 class InstagramTracking(models.Model):
@@ -38,7 +38,7 @@ class InstagramTracking(models.Model):
     ins_media_count         = models.PositiveIntegerField(blank=True, null=True, db_index=True)
     ins_biography           = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
     ins_external_url        = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
-    ins_recent_12_meta      = JSONField(blank=True, null=True)
+    ins_recent_12_meta      = JSONField(default=dict, blank=True, null=True)
     ins_verified            = models.BooleanField(default=False, db_index=True)
     ins_private             = models.BooleanField(default=False, db_index=True)
-    ins_json                = JSONField(blank=True, null=True)
+    ins_json                = JSONField(default=dict, blank=True, null=True)
