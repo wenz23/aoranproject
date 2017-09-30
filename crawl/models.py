@@ -24,6 +24,7 @@ class InstagramMap(models.Model):
     ins_tags                = JSONField(blank=True, null=True, db_index=True)
     ins_growth              = JSONField(blank=True, null=True, db_index=True)
     ins_growth_meta         = JSONField(blank=True, null=True)
+    project_info            = JSONField(blank=True, null=True)
 
 
 class InstagramTracking(models.Model):
