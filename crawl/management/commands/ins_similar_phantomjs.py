@@ -151,7 +151,8 @@ def type_in_search_box(driver=None, type_input=None, user_name=None):
                 break
         time.sleep(random.uniform(5, 6))
         if found_this_guy:
-            log.info("%s %s %s", user_name, "Search  Finish :", str(type_input))
+            pass
+            # log.info("%s %s %s", user_name, "Search  Finish :", str(type_input))
         else:
             log.info("%s %s %s", user_name, "Search Not Find:", str(type_input))
     return driver, found_this_guy
