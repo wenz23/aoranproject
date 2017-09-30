@@ -88,7 +88,7 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None, user_name=Non
                 ins_username = i.split('/')[3]
                 isp_obj, created = InstagramMap.objects.get_or_create(latest_username=str(ins_username).lower())
 
-                if ins_map_obj.project_info:
+                if ins_map_obj.project_info and ins_map_obj.project_info != {}:
                     isp_obj.project_info = {**isp_obj.project_info, **ins_map_obj.project_info}
                     isp_obj.save()
 
