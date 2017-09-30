@@ -113,7 +113,7 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None, user_name=Non
     except Exception as e:
         log.error("%s %s", user_name, "Loop Error")
         try:
-            driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/'+str(user_name)+'loop_error.png')
+            driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/'+str(ins_map_obj.latest_username)+'loop_error.png')
         except:
             pass
         return driver
@@ -166,7 +166,7 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
             found_this_guy = False
             log.error("%s %s %s", user_name, "Search Error. Reason: ", str(e))
             try:
-                driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(user_name) + 'loop_error.png')
+                driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(ins_map_obj.latest_username) + 'loop_error.png')
             except:
                 pass
             pass
@@ -179,7 +179,7 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
             except Exception as e:
                 log.error("%s %s %s", user_name, "Loop Error. Reason:", str(e))
                 try:
-                    driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(user_name) + 'loop_error.png')
+                    driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(ins_map_obj.latest_username) + 'loop_error.png')
                 except:
                     pass
                 pass

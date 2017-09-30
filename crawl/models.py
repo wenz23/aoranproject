@@ -42,3 +42,5 @@ class InstagramTracking(models.Model):
     ins_verified            = models.BooleanField(default=False, db_index=True)
     ins_private             = models.BooleanField(default=False, db_index=True)
     ins_json                = JSONField(default=dict, blank=True, null=True)
+
+
