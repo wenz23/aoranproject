@@ -35,7 +35,6 @@ def ins_login(user_name=None):
         # Login
         driver.get("https://www.instagram.com/")
         time.sleep(random.uniform(5, 7))
-        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/1-login-page.png')
         driver.find_element_by_xpath("//*[@id='react-root']/section/main/article/div[2]/div[2]/p/a").click()
         time.sleep(random.uniform(3, 5))
 
@@ -45,7 +44,6 @@ def ins_login(user_name=None):
         for i in user_name:
             username.send_keys(i)
             time.sleep(random.uniform(0.2, 0.6))
-        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/2-type-username.png')
         # Password
         driver.find_element_by_xpath("//INPUT[@name='password']").click()
         time.sleep(random.uniform(2, 3))
@@ -54,25 +52,23 @@ def ins_login(user_name=None):
             password.send_keys(i)
             time.sleep(random.uniform(0.2, 0.6))
         time.sleep(random.uniform(2, 3))
-        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/3-type-password.png')
 
         # Click Login
         driver.find_element_by_xpath(
             "//*[@id='react-root']/section/main/article/div[2]/div[1]/div/form/span/button").click()
         time.sleep(random.uniform(7, 9))
-        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/4-logged-in.png')
 
         try:
             driver.find_element_by_xpath("/html/body/div[1]/div/div[2]/div/div/button").click()
             time.sleep(random.uniform(2, 3))
         except:
             pass
-        driver.save_screenshot(BASE_DIR + '/phantom_js_screenshots/5-homepage.png')
         log.info("%s %s %s", user_name, "Login time: ", str("%.2f" % (time.time() - login_start_time)))
 
         return driver
     except Exception as e:
         log.error("%s %s %s", user_name, "Login Error", str(e))
+        driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/login_error.png')
         return None
 
 
@@ -110,6 +106,10 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None, user_name=Non
         return driver
     except Exception as e:
         log.error("%s %s", user_name, "Loop Error")
+        try:
+            driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/'+str(user_name)+'loop_error.png')
+        except:
+            pass
         return driver
         pass
 
@@ -158,6 +158,10 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
         except Exception as e:
             found_this_guy = False
             log.error("%s %s %s", user_name, "Search Error. Reason: ", str(e))
+            try:
+                driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(user_name) + 'loop_error.png')
+            except:
+                pass
             pass
 
         if found_this_guy:
@@ -167,6 +171,10 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
                 driver = loop_similar_people(driver=driver, ins_map_obj=ins_map_obj, user_name=user_name)
             except Exception as e:
                 log.error("%s %s %s", user_name, "Loop Error. Reason:", str(e))
+                try:
+                    driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(user_name) + 'loop_error.png')
+                except:
+                    pass
                 pass
 
         return driver
@@ -205,6 +213,7 @@ class Command(BaseCommand):
         parser.add_argument('--usr', nargs='+')
 
     def handle(self, *args, **options):
+
         # Get Parameters Ready
         usr, st, i_list = get_parameters(options=options)
 
