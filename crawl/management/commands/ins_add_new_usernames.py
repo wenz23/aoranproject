@@ -9,7 +9,12 @@ def new_project(project_name=None, new_list=None):
         map_obj, created = InstagramMap.objects.get_or_create(latest_username=new_username)
 
         if created:
-            map_obj.project_info = {project_name: timezone.now()}
+            map_obj.project_info = {project_name: timezone.now().isoformat()}
+        else:
+            temp_dict = map_obj.project_info
+            temp_dict[project_name] = timezone.now().isoformat()
+            map_obj.project_info = temp_dict
+        map_obj.save()
 
 
 class Command(BaseCommand):

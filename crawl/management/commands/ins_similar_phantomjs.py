@@ -187,22 +187,26 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
         return driver
 
 
-def get_list(order=None, skip=150, queue_length=240):
-    ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=10000,
-                                                                latest_follower_count__lte=400000,
-                                                                ins_find_similar=False
-                                                                ).exclude(latest_crawl_state=404
-                                                                          ).order_by('created_at')]
+def get_list(order=None, skip=150, queue_length=240, focus_project=False):
+    if focus_project:
+        ins_people_list = [am for am in InstagramMap.objects.exclude(project_info={})]
 
-    ins_people_list = ins_people_list[skip + queue_length * order:skip + queue_length * order + queue_length]
+    else:
+        ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=10000,
+                                                                    latest_follower_count__lte=400000,
+                                                                    ins_find_similar=False
+                                                                    ).exclude(latest_crawl_state=404
+                                                                              ).order_by('created_at')]
+
+        ins_people_list = ins_people_list[skip + queue_length * order:skip + queue_length * order + queue_length]
 
     return ins_people_list
 
 
-def get_parameters(options=None):
+def get_parameters(options=None, focus_project=None):
     usr, order, st = options['usr'][0], ins_passwords[options['usr'][0]][1], time.time()
 
-    i_list = get_list(order=order)
+    i_list = get_list(order=order, focus_project=focus_project)
     log.info("%s %s %s; %s %s",
              str(usr), "Process Start:", str(timezone.now().isoformat()), "List Size:", str(len(i_list)))
     return usr, st, i_list
@@ -222,7 +226,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # Get Parameters Ready
-        usr, st, i_list = get_parameters(options=options)
+        usr, st, i_list = get_parameters(options=options, focus_project=True)
 
         # Login
         driver = ins_login(user_name=usr)
