@@ -226,7 +226,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # Get Parameters Ready
-        usr, st, i_list = get_parameters(options=options, focus_project=True)
+        usr, st, i_list = get_parameters(options=options, focus_project=False)
 
         # Login
         driver = ins_login(user_name=usr)
