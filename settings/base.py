@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from .production import *
 
 
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
@@ -170,4 +171,3 @@ LOGGING = {
     }
 }
 
-from .production import *
