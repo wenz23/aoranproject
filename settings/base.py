@@ -11,14 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-try:
-    from .production import *
-    if os.getenv('PLATFORM') == 'aws':
-        from .aws import *
-    else:
-        from .local import *
-except ImportError as e:
-    print(e)
+from .production import *
+
 
 SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
