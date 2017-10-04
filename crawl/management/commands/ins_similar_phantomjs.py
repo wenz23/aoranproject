@@ -76,7 +76,7 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None, user_name=Non
     loop_counter, new_similar_counter, exist_similar_counter = 0, 0, 0
 
     try:
-        time.sleep(random.uniform(4, 5))
+        time.sleep(random.uniform(5, 6))
         driver.find_element_by_xpath("//div[contains(@class,'coreSpriteDropdownArrowWhite')]").click()
         time.sleep(random.uniform(2, 3))
 
