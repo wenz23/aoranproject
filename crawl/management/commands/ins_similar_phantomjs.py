@@ -68,7 +68,7 @@ def ins_login(user_name=None):
         return driver
     except Exception as e:
         log.error("%s %s %s", user_name, "Login Error", str(e))
-        driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/login_error.png')
+        # driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/login_error.png')
         return None
 
 
@@ -111,11 +111,11 @@ def loop_similar_people(driver=None, max_loop=5, ins_map_obj=None, user_name=Non
                            "; Existing:", str(exist_similar_counter)]))
         return driver
     except Exception as e:
-        log.error("%s %s", user_name, "Loop Error")
-        try:
-            driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/'+str(ins_map_obj.latest_username)+'loop_error.png')
-        except:
-            pass
+        log.error("%s %s %s", user_name, "Loop Error", ins_map_obj.latest_username)
+        # try:
+        #     # driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/'+str(ins_map_obj.latest_username)+'loop_error.png')
+        # except:
+        #     pass
         return driver
         pass
 
@@ -165,10 +165,10 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
         except Exception as e:
             found_this_guy = False
             log.error("%s %s %s", user_name, "Search Error. Reason: ", str(e))
-            try:
-                driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(ins_map_obj.latest_username) + 'loop_error.png')
-            except:
-                pass
+            # try:
+            #     driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(ins_map_obj.latest_username) + 'loop_error.png')
+            # except:
+            #     pass
             pass
 
         if found_this_guy:
@@ -177,11 +177,11 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
             try:
                 driver = loop_similar_people(driver=driver, ins_map_obj=ins_map_obj, user_name=user_name)
             except Exception as e:
-                log.error("%s %s %s", user_name, "Loop Error. Reason:", str(e))
-                try:
-                    driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(ins_map_obj.latest_username) + 'loop_error.png')
-                except:
-                    pass
+                log.error("%s %s %s %s", user_name, ins_map_obj.latest_username, "Loop Error. Reason:", str(e))
+                # try:
+                #     driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(ins_map_obj.latest_username) + 'loop_error.png')
+                # except:
+                #     pass
                 pass
 
         return driver
