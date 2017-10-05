@@ -183,6 +183,9 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
                 # except:
                 #     pass
                 pass
+        else:
+            ins_map_obj.latest_crawl_state = StateEnum.User_Not_Exist
+            ins_map_obj.save()
 
         return driver
 
