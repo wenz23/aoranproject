@@ -164,24 +164,16 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
             driver, found_this_guy = type_in_search_box(driver=driver, type_input=ins_map_obj.latest_username, user_name=user_name)
         except Exception as e:
             found_this_guy = False
+            ins_map_obj.latest_crawl_state = StateEnum.Other_Error
+            ins_map_obj.save()
             log.error("%s %s %s", user_name, "Search Error. Reason: ", str(e))
-            # try:
-            #     driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(ins_map_obj.latest_username) + 'loop_error.png')
-            # except:
-            #     pass
             pass
 
         if found_this_guy:
-            ins_map_obj.latest_crawl_state = StateEnum.User_Not_Exist
-            ins_map_obj.save()
             try:
                 driver = loop_similar_people(driver=driver, ins_map_obj=ins_map_obj, user_name=user_name)
             except Exception as e:
                 log.error("%s %s %s %s", user_name, ins_map_obj.latest_username, "Loop Error. Reason:", str(e))
-                # try:
-                #     driver.save_screenshot(BASE_DIR + '/phantomjs_screenshots/' + str(ins_map_obj.latest_username) + 'loop_error.png')
-                # except:
-                #     pass
                 pass
         else:
             ins_map_obj.latest_crawl_state = StateEnum.User_Not_Exist

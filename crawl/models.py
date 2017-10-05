@@ -10,6 +10,7 @@ class StateEnum(object):
     Parse_Failed    = 700
     Standby         = 500
     User_Not_Exist  = 404
+    Other_Error     = 405
 
 
 class InstagramMap(models.Model):
