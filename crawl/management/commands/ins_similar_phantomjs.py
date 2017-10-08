@@ -188,7 +188,7 @@ def get_list(order=None, skip=150, queue_length=240, focus_project=False):
 
     else:
         ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=10000,
-                                                                    latest_follower_count__lte=400000,
+                                                                    latest_follower_count__lte=600000,
                                                                     ins_find_similar=False
                                                                     ).exclude(latest_crawl_state=404
                                                                               ).order_by('created_at')]
