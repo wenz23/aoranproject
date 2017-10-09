@@ -182,13 +182,12 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
         return driver
 
 
-def get_list(order=None, skip=150, queue_length=240, focus_project=False):
+def get_list(order=None, skip=0, queue_length=240, focus_project=False):
     if focus_project:
         ins_people_list = [am for am in InstagramMap.objects.exclude(project_info={})]
 
     else:
         ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=10000,
-                                                                    latest_follower_count__lte=600000,
                                                                     ins_find_similar=False
                                                                     ).exclude(latest_crawl_state=404
                                                                               ).order_by('created_at')]
