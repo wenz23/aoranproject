@@ -13,23 +13,28 @@ from crawl.models import StateEnum
 from settings.production import api_gateway
 
 
-def lambda_crawler_request(username=None):
+def lambda_crawler_request(username=None, request_pointer=0):
+
+    if request_pointer <= len(api_gateway["CrawlerAPIKey-C"][1]):
+        request_pointer += 1
+    else:
+        request_pointer = 0
 
     try:
 
         api_key = api_gateway["CrawlerAPIKey-C"][0]
-        api_url = api_gateway["CrawlerAPIKey-C"][1]
+        api_url = api_gateway["CrawlerAPIKey-C"][1][request_pointer]
 
         header = {"username": username,
                   "x-api-key": api_key}
 
         req = requests.request('GET', url=api_url, headers=header, timeout=15, verify=False)
         if req.status_code == 200:
-            return req.content
+            return req.content, request_pointer
         else:
-            return None
+            return None, request_pointer
     except:
-        return None
+        return None, request_pointer
 
 
 def thread_wrapper_for_q(thread_count=1, c_function=None, q=None, lock_main_thread=True, wait_time=5):
