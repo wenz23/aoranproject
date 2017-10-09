@@ -16,12 +16,10 @@ from settings.production import api_gateway
 def lambda_crawler_request(username=None):
 
     try:
-        if api == "C":
-            api_key = api_gateway["CrawlerAPIKey-C"][0]
-            api_url = api_gateway["CrawlerAPIKey-C"][1]
-        else:
-            api_key = api_gateway["CrawlerAPIKey-P"][0]
-            api_url = api_gateway["CrawlerAPIKey-P"][1]
+
+        api_key = api_gateway["CrawlerAPIKey-C"][0]
+        api_url = api_gateway["CrawlerAPIKey-C"][1]
+
         header = {"username": username,
                   "x-api-key": api_key}
 

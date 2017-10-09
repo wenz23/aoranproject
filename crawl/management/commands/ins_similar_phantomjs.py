@@ -164,7 +164,7 @@ def search_ins_people(driver=None, ins_map_obj=None, user_name=None):
             driver, found_this_guy = type_in_search_box(driver=driver, type_input=ins_map_obj.latest_username, user_name=user_name)
         except Exception as e:
             found_this_guy = False
-            ins_map_obj.latest_crawl_state = StateEnum.Other_Error
+            ins_map_obj.latest_crawl_state = StateEnum.Loop_Error
             ins_map_obj.save()
             log.error("%s %s %s", user_name, "Search Error. Reason: ", str(e))
             pass
@@ -188,6 +188,7 @@ def get_list(order=None, skip=0, queue_length=240, focus_project=False):
 
     else:
         ins_people_list = [am for am in InstagramMap.objects.filter(latest_follower_count__gte=10000,
+                                                                    latest_follower_count__lte=600000,
                                                                     ins_find_similar=False
                                                                     ).exclude(latest_crawl_state=404
                                                                               ).order_by('created_at')]
