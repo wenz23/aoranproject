@@ -1,5 +1,3 @@
-import time
-
 import urllib3
 from django.core.management.base import BaseCommand
 
@@ -11,18 +9,16 @@ urllib3.disable_warnings()
 
 def activate_ins_crawl():
 
-    prior_week = timezone.now() - timezone.timedelta(days=5)
-
     prior_week_list = [am for am in
                        InstagramMap.objects.exclude(
                            latest_crawl_state__in=[404]
                        ).filter(
-                           latest_crawl_at__lt=prior_week
+                           latest_crawl_at__lt=timezone.now() - timezone.timedelta(days=5)
                        ).order_by('-created_at')]
     prior_week_list = []
 
     never_crawled_list = [am for am in
-                          InstagramMap.objects.filter(latest_crawl_at__isnull=True).order_by('-created_at')]
+                          InstagramMap.objects.filter(latest_crawl_at__isnull=True).exclude(latest_crawl_state=404).order_by('-created_at')]
 
     ins_to_crawl_list = list(set(prior_week_list + never_crawled_list))
 
@@ -30,7 +26,7 @@ def activate_ins_crawl():
     counter = 0
     request_pointer = 0
     for ins_map_obj in ins_to_crawl_list:
-        time.sleep(0.6)
+        # time.sleep(0.2)
         counter += 1
         if counter % 100 == 0:
             print(len(ins_to_crawl_list) - counter, " TO GO")
@@ -46,12 +42,10 @@ def activate_ins_crawl():
                 if not result:
                     ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
                 elif result == "404":
-                    print('404')
                     ins_map_obj.latest_crawl_state = StateEnum.User_Not_Exist
                 elif result == "Success":
                     ins_map_obj.latest_crawl_state = StateEnum.Parse_Success
                 else:
-
                     ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
                 ins_map_obj.save()
 

@@ -12,15 +12,17 @@ from crawl.models import InstagramMap, StateEnum
 urllib3.disable_warnings()
 
 
-def build_a_queue():
+def build_a_queue(uncrawled_only=False):
     q = Queue()
+    if uncrawled_only:
+        ins_to_crawl_list = [i for i in InstagramMap.objects.filter(latest_crawl_at__isnull=True).exclude(latest_crawl_state=404).order_by('-created_at')]
+    else:
+        week = timezone.now() - timezone.timedelta(days=5)
 
-    week = timezone.now() - timezone.timedelta(days=5)
+        list_1 = [i for i in InstagramMap.objects.filter(latest_crawl_at__lt=week).exclude(latest_crawl_state=404)]
+        list_2 = [i for i in InstagramMap.objects.filter(latest_crawl_at__isnull=True).exclude(latest_crawl_state=404).order_by('-created_at')]
 
-    list_1 = [i for i in InstagramMap.objects.exclude(latest_crawl_state__in=[404]).filter(latest_crawl_at__lt=week)]
-    list_2 = [i for i in InstagramMap.objects.filter(latest_crawl_at__isnull=True)]
-
-    ins_to_crawl_list = list(set(list_1 + list_2))
+        ins_to_crawl_list = list(set(list_1 + list_2))
 
     for j in ins_to_crawl_list:
         q.put(j)
@@ -30,9 +32,11 @@ def build_a_queue():
 
 
 def lambda_crawler_request_wrapper(q):
+    request_pointer = 0
     while not q.empty():
+        time.sleep(3)
         ins_map_obj     = q.get()
-        req_content     = lambda_crawler_request(username=ins_map_obj.latest_username)
+        req_content, request_pointer     = lambda_crawler_request(username=ins_map_obj.latest_username, request_pointer=request_pointer)
 
         if req_content:
             ins_map_obj.latest_crawl_state = StateEnum.Req_Success
@@ -40,7 +44,6 @@ def lambda_crawler_request_wrapper(q):
             # Parse
             try:
                 result = crawl_ins_username_via_lambda(req_content=req_content, ins_map_obj=ins_map_obj)
-
                 if not result:
                     ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
                 elif result == "404":
@@ -51,7 +54,7 @@ def lambda_crawler_request_wrapper(q):
                     ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
                 ins_map_obj.latest_crawl_at = timezone.now()
                 ins_map_obj.save()
-                print("Done; ", ins_map_obj.latest_username)
+                print("Done; ", str(request_pointer), ins_map_obj.latest_username)
             except Exception as e:
                 print("Parse Failed. Username: ", str(ins_map_obj.latest_username), "; Reason: ", str(e))
                 ins_map_obj.latest_crawl_state = StateEnum.Parse_Failed
@@ -65,6 +68,6 @@ def lambda_crawler_request_wrapper(q):
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
-        queue = build_a_queue()
+        queue = build_a_queue(uncrawled_only=True)
 
-        thread_wrapper_for_q(thread_count=4, c_function=lambda_crawler_request_wrapper, q=queue, wait_time=15)
+        thread_wrapper_for_q(thread_count=5, c_function=lambda_crawler_request_wrapper, q=queue)

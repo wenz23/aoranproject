@@ -37,7 +37,7 @@ def lambda_crawler_request(username=None, request_pointer=0):
         return None, request_pointer
 
 
-def thread_wrapper_for_q(thread_count=1, c_function=None, q=None, lock_main_thread=True, wait_time=5):
+def thread_wrapper_for_q(thread_count=1, c_function=None, q=None, lock_main_thread=True):
     worker = None
     if c_function and q:
         print("====================")
@@ -48,9 +48,8 @@ def thread_wrapper_for_q(thread_count=1, c_function=None, q=None, lock_main_thre
             if not q.empty():
                 worker = threading.Thread(target=c_function, args=(q,))
                 worker.daemon = False
-                time.sleep(wait_time)
                 worker.start()
-                time.sleep(0.1)
+                time.sleep(5)
             else:
                 return True
         if lock_main_thread and worker:
