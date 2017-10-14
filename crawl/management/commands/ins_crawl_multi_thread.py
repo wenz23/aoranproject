@@ -15,12 +15,12 @@ urllib3.disable_warnings()
 def build_a_queue(uncrawled_only=False):
     q = Queue()
     if uncrawled_only:
-        ins_to_crawl_list = [i for i in InstagramMap.objects.filter(latest_crawl_at__isnull=True).exclude(latest_crawl_state=404).order_by('-created_at')]
+        ins_to_crawl_list = [i for i in InstagramMap.objects.filter(latest_crawl_at__isnull=True).exclude(latest_crawl_state=404).order_by('created_at')]
     else:
         week = timezone.now() - timezone.timedelta(days=5)
 
         list_1 = [i for i in InstagramMap.objects.filter(latest_crawl_at__lt=week).exclude(latest_crawl_state=404)]
-        list_2 = [i for i in InstagramMap.objects.filter(latest_crawl_at__isnull=True).exclude(latest_crawl_state=404).order_by('-created_at')]
+        list_2 = [i for i in InstagramMap.objects.filter(latest_crawl_at__isnull=True).exclude(latest_crawl_state=404).order_by('created_at')]
 
         ins_to_crawl_list = list(set(list_1 + list_2))
 
@@ -34,7 +34,7 @@ def build_a_queue(uncrawled_only=False):
 def lambda_crawler_request_wrapper(q):
     request_pointer = 0
     while not q.empty():
-        time.sleep(3)
+        time.sleep(2.3)
         ins_map_obj     = q.get()
         req_content, request_pointer     = lambda_crawler_request(username=ins_map_obj.latest_username, request_pointer=request_pointer)
 
