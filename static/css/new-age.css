@@ -53,6 +53,10 @@ h6 {
   font-weight: 200;
   letter-spacing: 1px;
 }
+h3 {
+    font-size: 30px;
+    font-weight: 400;
+}
 p {
   font-size: 18px;
   line-height: 1.5;
@@ -452,4 +456,9 @@ body {
 img.partner-logo {
     width: 130px;
     margin: 10px;
+}
+
+.v-center {
+    display: inline-block;
+    vertical-align: middle;
 }
