@@ -257,6 +257,7 @@ section.features .section-heading {
   margin-bottom: 100px;
 }
 section.features .section-heading h2 {
+    color: black;
   margin-top: 0;
 }
 section.features .section-heading p {
