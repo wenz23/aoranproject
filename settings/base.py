@@ -28,8 +28,6 @@ PROJECT_DIR = os.path.abspath(os.path.join(SETTINGS_DIR, os.pardir))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'52.53.131.130', u'lookingfor.company', u'127.0.0.1', u'arrival.business']
-
 
 # Application definition
 
