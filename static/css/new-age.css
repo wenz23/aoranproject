@@ -282,6 +282,7 @@ section.features .device-container {
 section.features .feature-item {
   text-align: center;
   margin-bottom: 100px;
+  margin-top: 100px;
 }
 section.features .feature-item h3 {
   font-size: 30px;
