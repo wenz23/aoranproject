@@ -411,9 +411,8 @@ footer ul li a.active {
   padding-left: 0;
 }
 .btn-outline {
-  color: white;
-  border-color: white;
-  border: 1px solid;
+    color: white;
+    border: 1px solid white;
 }
 .btn-outline:hover,
 .btn-outline:focus,
@@ -423,6 +422,20 @@ footer ul li a.active {
   background-color: #fdcc52;
   border-color: #fdcc52;
 }
+
+.btn-outline-white-bkg {
+    color: red;
+    border: 1px solid red;
+}
+.btn-outline-white-bkg:hover,
+.btn-outline-white-bkg:focus,
+.btn-outline-white-bkg:active,
+.btn-outline-white-bkg.active {
+  color: white;
+  background-color: #fdcc52;
+  border-color: #fdcc52;
+}
+
 .btn {
   font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
   text-transform: uppercase;
