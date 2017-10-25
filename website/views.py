@@ -13,9 +13,28 @@ def home(request):
 def contact_form(request):
     if request.method == 'POST':
         try:
-            contact_email = str(request.POST.get('contact_email'))
-            if "@" in contact_email and "." in contact_email:
+            try:
+                contact_email = str(request.POST.get('contact_email'))
+            except:
+                contact_email = None
+            try:
+                contact_type = str(request.POST.get('contact_type'))
+            except:
+                contact_type = None
+            try:
+                contact_name = str(request.POST.get('contact_name'))
+            except:
+                contact_name = None
+            try:
+                contact_content = str(request.POST.get('contact_content'))
+            except:
+                contact_content = None
+
+            if contact_email is not None and "@" in contact_email and "." in contact_email:
                 nl_obj, created = ContactInfo.objects.get_or_create(contact_email)
-                return JsonResponse("Successfully Added for " + contact_email, safe=False)
+
+                return JsonResponse("Successfully Added ✅", safe=False)
+            else:
+                return JsonResponse("Incorrect Email Format ❌", safe=False)
         except Exception as e:
-            return JsonResponse("Error: " + str(e), safe=False)
+            return JsonResponse("❌ Error: " + str(e), safe=False)

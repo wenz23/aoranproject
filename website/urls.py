@@ -4,6 +4,6 @@ from website import views
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='homepage.html'), name='homepage'),
-    url(r'^contact/$', views.contact_form, name='contact-form'),
+    url(r'^contact-form/$', views.contact_form),
 
 ]
