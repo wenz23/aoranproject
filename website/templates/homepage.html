@@ -68,11 +68,11 @@
                     <div class="header-content">
                         <div class="header-content-inner">
                             <div style="display: inline-block"><h1></h1></div>
-                            <div id="content-1" style="display: inline-block"><h1>Arrival is the new generation of social first marketing agency</h1></div>
+                            <div id="content-1" style="display: inline-block"><h1>We are social first marketing agency</h1><br></div>
                             <div id="content-2" style="display: inline-block"><h1>We believe fortune favors the bold</h1><br></div>
                             <div id="content-3" style="display: inline-block"><h1>We help you get there</h1><br></div>
 
-                            <div><a href="#contact" class="btn btn-outline btn-sm page-scroll">Get Free Consultation</a></div>
+                            <div><a href="#contact" class="btn btn-outline btn-md page-scroll">Get Free Consultation</a></div>
                         </div>
 
                     </div>
@@ -82,20 +82,21 @@
     </header>
 
     <section id="empower" class="features">
+        <div class="container">
+
 
         <div class="section-heading text-center">
             <h2>Everything a company needs is in one place.</h2>
-            <a href="#contact" class="btn btn-outline-white-bkg btn-sm page-scroll">Get Free Consultation</a>
+            <a href="#contact" class="btn btn-outline-white-bkg btn-md page-scroll">Get Free Consultation</a>
+            <hr>
         </div>
-
-        <div class="container">
             <div class="row">
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-3 col-md-offset-1 col-sm-12">
                     <div class="feature-item">
                         <i class="icon-grid text-primary"></i>
                     </div>
                 </div>
-                <div class="col-md-9 col-sm-12">
+                <div class="col-md-7 col-sm-12">
                     <h2>Social Media Marketing</h2>
                     <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
                     <p class="text-muted">Pellentesque ac viverra augue, eu ullamcorper dolor. </p>
@@ -104,7 +105,7 @@
             </div>
 
             <div class="row">
-                <div class="col-md-9 col-sm-12">
+                <div class="col-md-7 col-md-offset-1 col-sm-12">
                     <h2>Content Strategy</h2>
                     <ul>
                         <li>
@@ -126,12 +127,12 @@
             </div>
 
             <div class="row">
-                <div class="col-md-3 col-sm-12">
+                <div class="col-md-3 col-md-offset-1 col-sm-12">
                     <div class="feature-item">
                         <i class="icon-directions text-primary"></i>
                     </div>
                 </div>
-                <div class="col-md-9 col-sm-12">
+                <div class="col-md-7 col-sm-12">
                     <h2>Another Thing We Can Do</h2>
                     <ul>
                         <li>
@@ -147,7 +148,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-9 col-sm-12">
+                <div class="col-md-7 col-md-offset-1 col-sm-12">
                     <h2>Leads Generation</h2>
                     <ul>
                         <li>
@@ -186,9 +187,9 @@
             <div class="row">
                 <div class="section-heading text-center">
                         <h2>Partner Header Placeholder</h2>
-                    <a href="#contact" class="btn btn-outline btn-sm page-scroll">Become Our Partner</a>
-
+                    <a href="#contact" class="btn btn-outline-white-bkg btn-md page-scroll">Become Our Partner</a>
                     </div>
+
             </div>
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 text-center">
@@ -244,7 +245,7 @@
             		<div class="input-group">
             			<input type="text" class="form-control" placeholder="Your Email...">
             			<span class="input-group-btn">
-            				<button class="btn btn-primary" type="submit">Go!</button>
+            				<button class="btn btn-primary" type="submit" id="contact-form">Go!</button>
             			</span>
             		</div>
             	</div>
@@ -289,6 +290,22 @@
         divs.eq(i).fadeIn(400).delay(1800).fadeOut(400, cycle);
         i = ++i % divs.length;
     })();
+</script>
+<script>
+    $(".contact-form").on("click", function() {
+        $.ajax({
+            type: "POST",
+            url: "/website/contact-form/",
+            dataType: "json",
+            data: {
+                'change_id': $(this).attr('id'),
+                'csrfmiddlewaretoken': '{{ csrf_token }}'
+            },
+            success: function (post_response) {alert(post_response);
+            }
+        });
+    });
+
 </script>
 
 </html>

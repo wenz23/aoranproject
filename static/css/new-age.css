@@ -71,16 +71,18 @@ p {
   font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
   font-weight: 200;
   letter-spacing: 1px;
+
 }
 .navbar-default .navbar-header .navbar-brand {
   font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
   font-weight: 200;
   letter-spacing: 1px;
-  color: #fdcc52;
+  color: #222222;
+  font-size: 24px;
 }
 .navbar-default .navbar-header .navbar-brand:hover,
 .navbar-default .navbar-header .navbar-brand:focus {
-  color: #fcbd20;
+  color: #fdcc52;
 }
 .navbar-default .navbar-header .navbar-toggle {
   font-size: 18px;
@@ -88,10 +90,12 @@ p {
   padding: 8px 10px;
 }
 .navbar-default .nav > li > a {
-  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+  /*font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';*/
+    font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
   /*text-transform: uppercase;*/
   letter-spacing: 1px;
-  font-size: 14px;
+    font-weight: 200;
+  font-size: 18px;
 }
 .navbar-default .nav > li > a,
 .navbar-default .nav > li > a:focus {
@@ -424,8 +428,9 @@ footer ul li a.active {
 }
 
 .btn-outline-white-bkg {
-    color: purple;
+    color: white;
     border: 1px solid purple;
+    background-color: purple;
 }
 .btn-outline-white-bkg:hover,
 .btn-outline-white-bkg:focus,
