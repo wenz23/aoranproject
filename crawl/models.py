@@ -46,3 +46,15 @@ class InstagramTracking(models.Model):
     ins_json                = JSONField(default=dict, blank=True, null=True)
 
 
+class GoogleMap(models.Model):
+    created_at              = models.DateTimeField(auto_now_add=True, db_index=True)
+    place_id                = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    map_url                 = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    name                    = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    phone                   = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    rating                  = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    reviews                 = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    website                 = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    address                 = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    description             = models.CharField(max_length=2000, blank=True, null=True, db_index=True)
+    json                    = JSONField(blank=True, null=True)
