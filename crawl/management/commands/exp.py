@@ -1,47 +1,50 @@
-from simplejson import loads
-
+import numpy as np
+import pandas as pd
+import json
 import requests
 from django.core.management.base import BaseCommand
-
-
-def request_func(url=None):
-    header = {
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.101 Safari/537.36",
-        "accept-language": "en-US,en;q=0.8",
-        "X-Proxy-Country": "US"
-    }
-
-    try:
-        req = requests.request('GET', url=url, headers=header, timeout=25, verify=False)
-        if req.status_code == 200:
-            return True, req.content
-        else:
-            return False, {"error": "request failed: not 200", "status code": str(req.status_code), "url": url}
-    except:
-        return False, {"error": "request failed: request function try except", "url": url}
-
-
-def parse_ins(req_content=None):
-    try:
-        html = req_content
-        text = html[html.index(str("window._sharedData = ").encode("utf-8")) + 21:]
-        text = (text[:text.index(str("};</script>").encode("utf-8"))] + str("}").encode("utf-8")).replace(
-            str('\\"').encode("utf-8"), str("").encode("utf-8"))
-        dictionary = loads(text)
-        return dictionary
-    except Exception as e:
-        return {'error': 'parse ins function try except'+ str(e)}
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
-        try:
-            url = "https://www.instagram.com/animeromance___/"
-            success, content = request_func(url=url)
-            if success:
-                return parse_ins(req_content=content)
-            else:
-                return content
-        except Exception as e:
-            return {"error": "handler function try except: " + str(e)}
+        df = pd.read_csv('/Users/aoran/Desktop/googleMapDump.csv')
+        for index, row in df.iterrows():
+            name = str(row['name'])
+            phone = str(row['phone'])
+            website = str(row['website'])
+            address = str(row['address'])
+            description = str(row['description'])
+            json_dict = json.loads(str(row['json']))
+            map_url = str(row['map_url'])
+            place_id = str(row['place_id'])
+            query = json.loads(str(row['query']))
+            try:
+                rating = float(row['rating']) if float(row['rating']) == float(row['rating']) else None
+            except:
+                rating = None
+            try:
+                reviews = int(row['reviews'])
+            except:
+                reviews = None
+            try:
+                lat = json_dict['geometry']['location']['lat']
+                lng = json_dict['geometry']['location']['lng']
+            except:
+                lat = None
+                lng = None
+            try:
+                city = None
+                state = None
+                zip_code = None
+
+                add_list = json_dict['address_components']
+                for i in add_list:
+                    if i['types'] == ['locality', 'political']:
+                        city = i['long_name']
+                    elif i['types'] ==['administrative_area_level_1', 'political']:
+                        state = i['short_name']
+                    elif i['types'] == ['postal_code']:
+                        zip_code = i['short_name']
+
+            print("Done")
