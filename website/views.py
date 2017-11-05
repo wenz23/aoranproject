@@ -14,27 +14,36 @@ def contact_form(request):
     if request.method == 'POST':
         try:
             try:
-                contact_email = str(request.POST.get('contact_email'))
+                inputName = str(request.POST.get('inputName'))
             except:
-                contact_email = None
+                inputName = None
             try:
-                contact_type = str(request.POST.get('contact_type'))
+                inputEmail = str(request.POST.get('inputEmail'))
             except:
-                contact_type = None
+                inputEmail = None
             try:
-                contact_name = str(request.POST.get('contact_name'))
+                inputPartner = True if str(request.POST.get('inputPartner')) == "true" else False
+                inputProduct = True if str(request.POST.get('inputProduct')) == "true" else False
+                inputDetail = True if str(request.POST.get('inputDetail')) == "true" else False
             except:
-                contact_name = None
-            try:
-                contact_content = str(request.POST.get('contact_content'))
-            except:
-                contact_content = None
+                inputPartner = inputProduct = inputDetail = False
 
-            if contact_email is not None and "@" in contact_email and "." in contact_email:
-                nl_obj, created = ContactInfo.objects.get_or_create(contact_email)
+            try:
+                inputMessage = str(request.POST.get('inputMessage'))
+            except:
+                inputMessage = None
 
-                return JsonResponse("Successfully Added ✅", safe=False)
+            if inputEmail is not None and "@" in inputEmail and "." in inputEmail.split('@')[1]:
+                nl_obj, created = ContactInfo.objects.get_or_create(contact_email=inputEmail)
+                nl_obj.contact_name = inputName
+                nl_obj.contact_content = inputMessage
+                nl_obj.contact_is_partner = inputPartner
+                nl_obj.contact_is_product = inputProduct
+                nl_obj.contact_is_detail = inputDetail
+                nl_obj.save()
+
+                return JsonResponse({"result": "Successfully Added ✅"}, safe=False)
             else:
-                return JsonResponse("Incorrect Email Format ❌", safe=False)
+                return JsonResponse({"result": "Incorrect Email Format ❌"}, safe=False)
         except Exception as e:
-            return JsonResponse("❌ Error: " + str(e), safe=False)
+            return JsonResponse({"result":"❌ Error: " + str(e)}, safe=False)
