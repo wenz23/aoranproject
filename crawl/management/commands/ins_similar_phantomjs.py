@@ -59,6 +59,17 @@ def ins_login(user_name=None):
         time.sleep(random.uniform(7, 9))
 
         try:
+            driver.find_element_by_xpath("/html/body/div[1]/div/div/div[2]/div/div/button").click()
+            time.sleep(random.uniform(2, 3))
+        except:
+            pass
+        try:
+            driver.find_element_by_xpath("/html/body/div[1]/div/div/button").click()
+            time.sleep(random.uniform(2, 3))
+        except:
+            pass
+
+        try:
             driver.find_element_by_xpath("/html/body/div[1]/div/div[2]/div/div/button").click()
             time.sleep(random.uniform(2, 3))
         except:
