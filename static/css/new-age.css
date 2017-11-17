@@ -367,6 +367,12 @@ section.contact ul.list-social li.social-twitter a {
 section.contact ul.list-social li.social-twitter a:hover {
   background-color: #0d95e8;
 }
+section.contact ul.list-social li.social-instagram a {
+  background: linear-gradient( #400090, transparent), linear-gradient(200deg, #d047d1, #ff0000,    #ffff00)
+}
+section.contact ul.list-social li.social-instagram a:hover {
+  background-color: #b32e91;
+}
 section.contact ul.list-social li.social-facebook a {
   background-color: #3b5998;
 }
@@ -429,16 +435,16 @@ footer ul li a.active {
 
 .btn-outline-white-bkg {
     color: white;
-    border: 1px solid purple;
-    background-color: purple;
+    /*border: 1px solid aliceblue;*/
+    background-color: dodgerblue;
 }
 .btn-outline-white-bkg:hover,
 .btn-outline-white-bkg:focus,
 .btn-outline-white-bkg:active,
 .btn-outline-white-bkg.active {
   color: white;
-  background-color: #fdcc52;
-  border-color: #fdcc52;
+  background-color: purple;
+  /*border-color: #fdcc52;*/
 }
 
 .btn {

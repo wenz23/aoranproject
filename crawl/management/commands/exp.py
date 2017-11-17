@@ -2,49 +2,22 @@ import numpy as np
 import pandas as pd
 import json
 import requests
+from crawl.models import InstagramTracking
 from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
-        df = pd.read_csv('/Users/aoran/Desktop/googleMapDump.csv')
-        for index, row in df.iterrows():
-            name = str(row['name'])
-            phone = str(row['phone'])
-            website = str(row['website'])
-            address = str(row['address'])
-            description = str(row['description'])
-            json_dict = json.loads(str(row['json']))
-            map_url = str(row['map_url'])
-            place_id = str(row['place_id'])
-            query = json.loads(str(row['query']))
-            try:
-                rating = float(row['rating']) if float(row['rating']) == float(row['rating']) else None
-            except:
-                rating = None
-            try:
-                reviews = int(row['reviews'])
-            except:
-                reviews = None
-            try:
-                lat = json_dict['geometry']['location']['lat']
-                lng = json_dict['geometry']['location']['lng']
-            except:
-                lat = None
-                lng = None
-            try:
-                city = None
-                state = None
-                zip_code = None
+        city = ['seattle', 'hawaii', 'pacific northwest', 'pacific north west']
+        tag = ['food', 'cooking', 'lifestyle', 'community', 'photography', 'events', 'party',
+               'fashion', 'culture', 'media', 'Capitol Hill', 'drinking', 'cocktail', 'clubbing',
+               'dining', 'interior', 'travel', 'beach', 'surfing', 'vacation', 'events', 'honeymoon']
+        objs = []
+        for each_city in city:
+            for each_tag in tag:
+                objs += [[each_city, each_tag, am.ins_username, am.ins_fullname, am.ins_follower_count, am.ins_media_count, am.ins_biography, am.ins_external_url, am.ins_verified] for am in InstagramTracking.objects.filter(ins_biography__icontains=each_city).filter(ins_biography__icontains=each_tag)]
+        print('Done')
+        df = pd.DataFrame(objs)
+        df.to_excel('Done.xlsx', index=False)
 
-                add_list = json_dict['address_components']
-                for i in add_list:
-                    if i['types'] == ['locality', 'political']:
-                        city = i['long_name']
-                    elif i['types'] ==['administrative_area_level_1', 'political']:
-                        state = i['short_name']
-                    elif i['types'] == ['postal_code']:
-                        zip_code = i['short_name']
-
-            print("Done")
