@@ -53,6 +53,10 @@ h6 {
   font-weight: 200;
   letter-spacing: 1px;
 }
+h2.section-title {
+    font-weight: 600;
+}
+
 h3 {
     font-size: 26px;
     font-weight: 400;
@@ -60,7 +64,11 @@ h3 {
 .subtitle {
     font-style: italic;
     font-weight: 100;
+    display:inline;
+    background-color:#222222;
+    color:white;
 }
+
 h4 {
     font-size: 24px;
     font-weight: 600;
@@ -362,9 +370,9 @@ section.contact ul.list-social {
 }
 section.contact ul.list-social li a {
   display: block;
-  height: 80px;
-  width: 80px;
-  line-height: 80px;
+  height: 70px;
+  width: 70px;
+  line-height: 70px;
   font-size: 40px;
   border-radius: 100%;
   color: white;
@@ -393,6 +401,14 @@ section.contact ul.list-social li.social-google-plus a {
 section.contact ul.list-social li.social-google-plus a:hover {
   background-color: #d73925;
 }
+
+section.contact ul.list-social li.social-crunchbase a {
+    background-color: #0087CE;
+}
+section.contact ul.list-social li.social-crunchbase a:hover {
+    background-color: #008ADC;
+}
+
 footer {
   background-color: #222222;
   padding: 25px 0;
