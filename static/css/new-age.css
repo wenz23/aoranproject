@@ -67,7 +67,7 @@ h3 {
     font-style: italic;
     font-weight: 100;
     display:inline;
-    background-color:#222222;
+    background: linear-gradient(to left, #7b4397, #dc2430);
     color:white;
 }
 
