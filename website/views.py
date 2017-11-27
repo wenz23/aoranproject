@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.template import loader
-
+import json
 from website.models import ContactInfo
 
 
@@ -41,9 +41,9 @@ def contact_form(request):
                 nl_obj.contact_is_product = inputProduct
                 nl_obj.contact_is_detail = inputDetail
                 nl_obj.save()
-
-                return JsonResponse({"result": "Successfully Added ✅"}, safe=False)
+                return JsonResponse("Submit Succeeded 🕺", safe=False)
             else:
-                return JsonResponse({"result": "Incorrect Email Format ❌"}, safe=False)
+                return JsonResponse("Submit Error, Check Your Spelling?", safe=False)
         except Exception as e:
-            return JsonResponse({"result":"❌ Error: " + str(e)}, safe=False)
+            return JsonResponse(str(e), safe=False)
+
