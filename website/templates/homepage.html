@@ -68,7 +68,9 @@
                     <div class="header-content">
                         <div class="header-content-inner">
                             <div style="display: inline-block"><h1></h1></div>
-                            <div id="content-1" style="display: inline-block"><h1>We are a social first marketing agency                      </h1><br></div>
+                            <div id="content-1" style="display: inline-block">
+                                <h1>We are a social first marketing agency</h1>
+                            </div>
                           
 
 
@@ -424,13 +426,13 @@
 
 </body>
 
-<script>
-    var divs = $('div[id^="content-"]').hide(), i = 0;
-    (function cycle() {
-        divs.eq(i).fadeIn(400).delay(1800).fadeOut(400, cycle);
-        i = ++i % divs.length;
-    })();
-</script>
+{#<script>#}
+{#    var divs = $('div[id^="content-"]').hide(), i = 0;#}
+{#    (function cycle() {#}
+{#        divs.eq(i).fadeIn(400).delay(1800).fadeOut(400, cycle);#}
+{#        i = ++i % divs.length;#}
+{#    })();#}
+{#</script>#}
 <script>
     $("#formSubmit").on("click", function() {
         $.ajax({
